@@ -1,37 +1,28 @@
 import React from "react";
-import Basic from "./BasicLegend";
-import Gradient from "./GradientLegend";
-import Choropleth from "./ChoroplethLegend";
-import Timeline from "./TimelineLegend";
-
-enum LegendType {
-  basic = "basic",
-  gradient = "gradient",
-  choropleth = "choropleth",
-  timeline = "timeline"
-}
+import { legendData } from "../types";
+import styled from "styled-components";
 
 interface Props {
-  data: {
-    id: string;
-    name: string;
-    type: LegendType;
-    items: any[];
-    description: string;
-  };
+  data: legendData;
 }
 
 export default function Legend({ data }: Props) {
-  switch (data.type) {
-    case LegendType.basic:
-      return <Basic />;
-    case LegendType.gradient:
-      return <Gradient />;
-    case LegendType.choropleth:
-      return <Choropleth />;
-    case LegendType.timeline:
-      return <Timeline />;
-    default:
-      return <p>no legend</p>;
-  }
+  return (
+    <LegendWrapper>
+      <PStyled>{data.name}</PStyled>
+      <p>{data.name}</p>
+      <p> {data.type}</p>
+      <p>{data.description}</p>
+    </LegendWrapper>
+  );
 }
+
+const LegendWrapper = styled.div`
+  width: 70%;
+  border: 5px solid coral;
+  padding: 50px;
+`;
+
+const PStyled = styled.p`
+  font-family: OpenSans;
+`;

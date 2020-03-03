@@ -4,7 +4,7 @@ import Legend from "./Legend";
 
 export function Legends() {
   const [legendData, setLegendData] = useState([]);
-  console.log("legendData:", legendData);
+
   useEffect(() => {
     axios
       .get(
