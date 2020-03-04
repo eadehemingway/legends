@@ -7,10 +7,10 @@ import { legendData, LegendType } from "../types";
 
 interface Props {
   data: legendData;
+  isDesktop: boolean;
 }
 
-export default function LegendVisual({ data }: Props) {
-  const isDesktop = window.innerWidth > 768;
+export default function LegendVisual({ data, isDesktop }: Props) {
   switch (data.type) {
     case LegendType.basic:
       return <Basic data={data} isDesktop={isDesktop} />;

@@ -28,6 +28,7 @@ export default function Legend({ data }: Props) {
       isDragging: !!monitor.isDragging()
     })
   });
+  const isDesktop = window.innerWidth > 768;
 
   Modal.setAppElement("body");
   const { description } = data;
@@ -36,7 +37,6 @@ export default function Legend({ data }: Props) {
   const arrOfDescriptionNodes = [];
   parsedDesc.body.childNodes.forEach(c => arrOfDescriptionNodes.push(c));
 
-  const modalContentStyle = { width: 600, margin: "auto", padding: 40 };
   const arrowTransform = showVisualLegend ? "rotate(180deg)" : "rotate(0deg)";
   const largeVisual = data.type === "basic" || data.type === "gradient";
 
@@ -48,6 +48,12 @@ export default function Legend({ data }: Props) {
   }
   function onChangeCollapse() {
     setShowVisualLegend(!showVisualLegend);
+  }
+  function onOpenModal() {
+    document.body.style.overflow = "hidden";
+  }
+  function onCloseModal() {
+    document.body.style.overflow = "unset";
   }
   return (
     <LegendWrapper
@@ -80,17 +86,26 @@ export default function Legend({ data }: Props) {
           />
         </RightNav>
       </NavWrapper>
-      <LegendVisual data={data} />
+      <LegendVisual data={data} isDesktop={isDesktop} />
       <Modal
         isOpen={modalOpen}
+        onAfterClose={onCloseModal}
+        onAfterOpen={onOpenModal}
         onRequestClose={() => setModalOpen(false)}
-        style={{ content: modalContentStyle }}
+        className={`modal-content ${
+          isDesktop ? "modal-content-desktop" : "modal-content-mobile"
+        }`}
+        overlayClassName="react-modal-overlay"
       >
-        <CrossIconStyled src={cross} onClick={() => setModalOpen(false)} />
-        <h2>{data.name}</h2>
-        {arrOfDescriptionNodes.map((t, i) => (
-          <p key={i}>{t.innerHTML}</p>
-        ))}
+        <ModalContent>
+          <CrossIconStyled src={cross} onClick={() => setModalOpen(false)} />
+          <H2Styled>{data.name}</H2Styled>
+          <ModalTextContent>
+            {arrOfDescriptionNodes.map((t, i) => (
+              <p key={i}>{t.innerHTML}</p>
+            ))}
+          </ModalTextContent>
+        </ModalContent>
       </Modal>
     </LegendWrapper>
   );
@@ -102,9 +117,15 @@ const IconStyled = styled.img`
   cursor: pointer;
   margin: 15px;
 `;
+const H2Styled = styled.h2`
+  width: 80%;
+`;
 const CrossIconStyled = styled(IconStyled)`
   position: absolute;
-  right: 30px;
+  top: 0;
+  right: 20px;
+  margin: 0;
+  margin-top: 10px;
 `;
 
 interface LegendWrapper {
@@ -135,6 +156,17 @@ const NavWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+const ModalTextContent = styled.div`
+  max-height: 500px;
+  width: 90%;
+  padding: 10px;
+  position: relative;
+  overflow: scroll;
+`;
+const ModalContent = styled.div`
+  position: relative;
+`;
+
 const LeftNav = styled.div`
   display: flex;
   justify-content: space-around;

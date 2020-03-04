@@ -1,3 +1,40 @@
 body {
   font-family: OpenSans;
 }
+
+.modal-content {
+  background-color: white;
+  margin: auto;
+  z-index: 3;
+}
+
+.modal-content-desktop {
+  width: 600px;
+  padding: 40px;
+}
+.modal-content-mobile {
+  background-color: white;
+  width: 100%;
+  z-index: 3;
+  padding: 10px;
+  padding-bottom: 30px;
+  left: 0px;
+  top: 0;
+  overflow: scroll;
+  height: auto;
+}
+
+.react-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 27, 54, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 102;
+  padding: 10px;
+  animation: fadein 0.2s;
+}
