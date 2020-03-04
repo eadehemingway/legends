@@ -29,7 +29,13 @@ const TooltipWrapper = styled.div`
   width: fit-content;
   border-radius: 2px;
   ${({ orientation }: TooltipWrapper) =>
-    orientation === "left" ? "right: 10px" : "left: 10px"}
+    orientation === "left" ? "right: 10px" : "left: 10px"};
+
+  @media only screen and (max-width: 768px) {
+    top: -60px;
+    ${({ orientation }: TooltipWrapper) =>
+      orientation === "left" ? "right: -1px" : "left: -1px"};
+  }
 `;
 
 const Tag = styled.div`

@@ -77,7 +77,7 @@ const NavWrapper = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  height: 100px;
+  min-height: 100px;
 `;
 
 const LeftNav = styled.div`

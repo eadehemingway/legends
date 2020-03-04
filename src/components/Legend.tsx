@@ -73,6 +73,6 @@ const LegendWrapper = styled.div`
   }};
   @media only screen and (max-width: 768px) {
     width: 90%;
-    padding: 10px 20px 30px 20px;
+    padding: 30px 20px 30px 20px;
   }
 `;
