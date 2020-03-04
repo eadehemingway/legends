@@ -10,9 +10,10 @@ export default function Timeline({ data }) {
 
   useEffect(() => {
     const rangeValues = d3.range(minYearInRange, maxYearInRange + step, step);
-    const svgWidth = 700;
-    const svgHeight = 400;
-    const sliderWidth = svgWidth - 200;
+    const svgWidth = 850;
+    const svgHeight = 200;
+    const margin = 50;
+    const sliderWidth = svgWidth - margin;
     const xScale = d3
       .scaleLinear()
       .domain([minYearInRange, maxYearInRange])
@@ -27,7 +28,9 @@ export default function Timeline({ data }) {
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
-    const sliderGroup = svg.append("g").attr("transform", "translate(70,100)");
+    const sliderGroup = svg
+      .append("g")
+      .attr("transform", `translate(${margin / 2},${margin})`);
 
     const lineStrokeWidth = 4;
     const trackLine = sliderGroup

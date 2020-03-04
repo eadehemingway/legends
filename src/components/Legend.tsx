@@ -38,31 +38,37 @@ export default function Legend({ data }: Props) {
 
   const modalContentStyle = { width: 600, margin: "auto", padding: 40 };
   const arrowTransform = showVisualLegend ? "rotate(180deg)" : "rotate(0deg)";
+  const largeVisual = data.type === "basic";
   return (
     <LegendWrapper
       showVisualLegend={showVisualLegend}
-      // ref={drag}
+      ref={drag}
       isDragging={isDragging}
+      largeVisual={largeVisual}
     >
       <NavWrapper>
-        <IconWrapper icon={dragDots} tooltipText="drag" />
-        <PStyled>{data.name}</PStyled>
-        <IconWrapper
-          onClick={() => setShowMore(!showMore)}
-          icon={showMore ? hide : show}
-          tooltipText={showMore ? "Hide layer" : "Show layer"}
-        />
-        <IconWrapper
-          icon={info}
-          onClick={() => setModalOpen(true)}
-          tooltipText="Layer info"
-        />
-        <IconWrapper
-          icon={arrowDown}
-          style={{ transition: "transform 0.5s", transform: arrowTransform }}
-          onClick={() => setShowVisualLegend(!showVisualLegend)}
-          tooltipText={showVisualLegend ? "Collapse layer" : "Expand layer"}
-        />
+        <LeftNav>
+          <IconWrapper icon={dragDots} tooltipText="drag" />
+          <PStyled>{data.name}</PStyled>
+        </LeftNav>
+        <RightNav>
+          <IconWrapper
+            onClick={() => setShowMore(!showMore)}
+            icon={showMore ? hide : show}
+            tooltipText={showMore ? "Hide layer" : "Show layer"}
+          />
+          <IconWrapper
+            icon={info}
+            onClick={() => setModalOpen(true)}
+            tooltipText="Layer info"
+          />
+          <IconWrapper
+            icon={arrowDown}
+            style={{ transition: "transform 0.5s", transform: arrowTransform }}
+            onClick={() => setShowVisualLegend(!showVisualLegend)}
+            tooltipText={showVisualLegend ? "Collapse layer" : "Expand layer"}
+          />
+        </RightNav>
       </NavWrapper>
       <LegendVisual data={data} />
       <Modal
@@ -84,7 +90,7 @@ const IconStyled = styled.img`
   width: 20px;
   height: 20px;
   cursor: pointer;
-  border: 2px solid pink;
+  margin: 15px;
 `;
 const CrossIconStyled = styled(IconStyled)`
   position: absolute;
@@ -94,19 +100,33 @@ const CrossIconStyled = styled(IconStyled)`
 interface LegendWrapper {
   showVisualLegend: boolean;
   isDragging: boolean;
+  largeVisual: boolean;
 }
 const LegendWrapper = styled.div`
   background: white;
-  width: 700px;
-  border: 5px solid coral;
-  padding: 50px 90px;
-  height: ${({ showVisualLegend }: LegendWrapper) =>
-    showVisualLegend ? "300px" : "20px"};
+  width: 800px;
+  margin: auto;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 70px 120px 30px 120px;
+  height: ${({ showVisualLegend, largeVisual }: LegendWrapper) => {
+    const openHeight = largeVisual ? "300px" : "150px";
+    return showVisualLegend ? openHeight : "20px";
+  }};
   transition: height 1s;
   overflow: hidden;
   opacity: ${({ isDragging }: LegendWrapper) => (isDragging ? 0.2 : 1)};
 `;
 const NavWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const LeftNav = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+const RightNav = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -114,4 +134,6 @@ const NavWrapper = styled.div`
 
 const PStyled = styled.p`
   font-family: OpenSans;
+  font-size: 18px;
+  margin-top: 10px;
 `;

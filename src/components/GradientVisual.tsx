@@ -3,10 +3,14 @@ import * as d3 from "d3";
 
 export default function Gradient({ data }) {
   useEffect(() => {
+    const svgWidth = 850;
+    const svgHeight = 200;
+    const margin = 50;
+    const gradientWidth = svgWidth - margin;
     const svg = d3
       .select("#Gradient-svg")
-      .attr("width", 700)
-      .attr("height", 400);
+      .attr("width", svgWidth)
+      .attr("height", svgHeight);
 
     const linearGradient = svg
       .append("defs")
@@ -26,9 +30,9 @@ export default function Gradient({ data }) {
 
     svg
       .append("rect")
-      .attr("x", 0)
-      .attr("y", 50)
-      .attr("width", 700)
+      .attr("x", margin / 2)
+      .attr("y", margin)
+      .attr("width", gradientWidth)
       .attr("height", 10)
       .style("fill", "url(#linear-gradient)");
 
@@ -39,10 +43,10 @@ export default function Gradient({ data }) {
       .append("text")
       .text(d => d.name)
       .attr("x", (d, i) => {
-        const x = i * (100 / data.items.length + 1);
-        return `${x}%`;
+        const wordLength = 30;
+        return i ? gradientWidth - wordLength : wordLength;
       })
-      .attr("y", 80);
+      .attr("y", margin + 30);
   }, [data.items]);
 
   return (
