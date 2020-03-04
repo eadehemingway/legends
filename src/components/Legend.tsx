@@ -10,6 +10,7 @@ import info from "../assets/icons/info.svg";
 import show from "../assets/icons/show.svg";
 import cross from "../assets/icons/cross.svg";
 import LegendVisual from "./LegendVisual";
+import IconWrapper from "./IconWrapper";
 
 interface Props {
   data: legendData;
@@ -28,21 +29,27 @@ export default function Legend({ data }: Props) {
   parsedDesc.body.childNodes.forEach(c => arrOfDescriptionNodes.push(c));
 
   const modalContentStyle = { width: 600, margin: "auto", padding: 40 };
-
+  const arrowTransform = showVisualLegend ? "rotate(180deg)" : "rotate(0deg)";
   return (
     <LegendWrapper showVisualLegend={showVisualLegend}>
       <NavWrapper>
-        <IconStyled src={dragDots} />
+        <IconWrapper icon={dragDots} tooltipText="drag" />
         <PStyled>{data.name}</PStyled>
-        <IconStyled
+        <IconWrapper
           onClick={() => setShowMore(!showMore)}
-          src={showMore ? hide : show}
+          icon={showMore ? hide : show}
+          tooltipText={showMore ? "hide" : "show"}
         />
-        <IconStyled src={info} onClick={() => setModalOpen(true)} />
-        <ArrowIconStyled
-          src={arrowDown}
-          showVisualLegend={showVisualLegend}
+        <IconWrapper
+          icon={info}
+          onClick={() => setModalOpen(true)}
+          tooltipText="more info"
+        />
+        <IconWrapper
+          icon={arrowDown}
+          style={{ transition: "transform 0.5s", transform: arrowTransform }}
           onClick={() => setShowVisualLegend(!showVisualLegend)}
+          tooltipText="show legend"
         />
       </NavWrapper>
       <LegendVisual data={data} />
@@ -65,20 +72,11 @@ const IconStyled = styled.img`
   width: 20px;
   height: 20px;
   cursor: pointer;
+  border: 2px solid pink;
 `;
 const CrossIconStyled = styled(IconStyled)`
   position: absolute;
   right: 30px;
-`;
-
-interface ArrowIconStyled {
-  showVisualLegend: boolean;
-}
-
-const ArrowIconStyled = styled(IconStyled)`
-  transform: ${({ showVisualLegend }: ArrowIconStyled) =>
-    showVisualLegend ? "rotate(180deg)" : "rotate(0deg)"};
-  transition: transform 0.5s;
 `;
 
 interface LegendWrapper {
