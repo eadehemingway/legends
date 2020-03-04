@@ -14,5 +14,6 @@ code {
 
 @font-face {
   font-family: "OpenSans";
-  src: local("OpenSans"), url(./fonts/OpenSans-Regular.ttf) format("truetype");
+  src: local("OpenSans"),
+    url(./assets/fonts/OpenSans-Regular.ttf) format("truetype");
 }
