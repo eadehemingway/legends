@@ -38,5 +38,4 @@ const IconStyled = styled.img`
   width: 20px;
   height: 20px;
   cursor: pointer;
-  border: 2px solid pink;
 `;

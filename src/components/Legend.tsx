@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { legendData } from "../types";
 import styled from "styled-components";
+import { useDrag } from "react-dnd";
 
 import dragDots from "../assets/icons/drag-dots.svg";
 import arrowDown from "../assets/icons/arrow-down.svg";
@@ -21,6 +22,13 @@ export default function Legend({ data }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [showVisualLegend, setShowVisualLegend] = useState(false);
 
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: "legend", id: data.id },
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging()
+    })
+  });
+
   Modal.setAppElement("body");
   const { description } = data;
   const parser = new DOMParser();
@@ -31,7 +39,11 @@ export default function Legend({ data }: Props) {
   const modalContentStyle = { width: 600, margin: "auto", padding: 40 };
   const arrowTransform = showVisualLegend ? "rotate(180deg)" : "rotate(0deg)";
   return (
-    <LegendWrapper showVisualLegend={showVisualLegend}>
+    <LegendWrapper
+      showVisualLegend={showVisualLegend}
+      ref={drag}
+      isDragging={isDragging}
+    >
       <NavWrapper>
         <IconWrapper icon={dragDots} tooltipText="drag" />
         <PStyled>{data.name}</PStyled>
@@ -81,18 +93,20 @@ const CrossIconStyled = styled(IconStyled)`
 
 interface LegendWrapper {
   showVisualLegend: boolean;
+  isDragging: boolean;
 }
 const LegendWrapper = styled.div`
-  width: 70%;
+  background: white;
+  width: 700px;
   border: 5px solid coral;
-  padding: 50px;
+  padding: 50px 90px;
   height: ${({ showVisualLegend }: LegendWrapper) =>
     showVisualLegend ? "300px" : "20px"};
   transition: height 1s;
   overflow: hidden;
+  opacity: ${({ isDragging }: LegendWrapper) => (isDragging ? 0.2 : 1)};
 `;
 const NavWrapper = styled.div`
-  width: 70%;
   display: flex;
   justify-content: space-around;
   align-items: center;
