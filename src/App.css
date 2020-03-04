@@ -35,6 +35,5 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 102;
-  padding: 10px;
   animation: fadein 0.2s;
 }

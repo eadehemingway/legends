@@ -71,24 +71,25 @@ export default function Gradient({ data, isDesktop }) {
       <svg id="Gradient-svg"></svg>
 
       {!showInput && (
-        <div>
+        <TextContainer>
           <PStyled>{text}</PStyled>
           <ButtonStyled onClick={() => setShowInput(true)}>
             {" "}
             {text ? "edit" : "add"} text
           </ButtonStyled>
-        </div>
+        </TextContainer>
       )}
 
       {showInput && (
-        <div>
+        <TextContainer>
           <InputStyled
             value={text}
             onChange={({ target }) => setText(target.value)}
+            ref={input => input && input.focus()}
           />
 
           <ButtonStyled onClick={handleSubmit}>submit</ButtonStyled>
-        </div>
+        </TextContainer>
       )}
     </>
   );
@@ -117,8 +118,12 @@ const InputStyled = styled.input`
   margin-top: 30px;
   margin-bottom: 20px;
   padding: 15px;
+  border: none;
+  border-bottom: 1px solid grey;
+  box-sizing: border-box;
   @media only screen and (max-width: 768px) {
     font-size: 12px;
+    margin-top: 0;
   }
 `;
 
@@ -129,6 +134,11 @@ const PStyled = styled.p`
   padding: 15px;
   @media only screen and (max-width: 768px) {
     font-size: 12px;
-    margin: 0px;
+    margin-top: 0;
   }
+`;
+
+const TextContainer = styled.div`
+  width: 100%;
+  max-width: 100%;
 `;

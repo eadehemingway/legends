@@ -20,6 +20,7 @@ export default function LegendModal({ data, modalOpen, setModalOpen }: Props) {
   const parsedDesc = parser.parseFromString(description, "text/html");
   const arrOfDescriptionNodes = [];
   parsedDesc.body.childNodes.forEach(c => arrOfDescriptionNodes.push(c));
+  const innerTextDescriptions = arrOfDescriptionNodes.map(d => d.innerText);
 
   function onOpenModal() {
     document.body.style.overflow = "hidden";
@@ -42,8 +43,8 @@ export default function LegendModal({ data, modalOpen, setModalOpen }: Props) {
         <CrossIconStyled src={cross} onClick={() => setModalOpen(false)} />
         <H2Styled>{data.name}</H2Styled>
         <ModalTextContent>
-          {arrOfDescriptionNodes.map((t, i) => (
-            <p key={i}>{t.innerHTML}</p>
+          {innerTextDescriptions.map((t, i) => (
+            <p key={i}>{t}</p>
           ))}
         </ModalTextContent>
       </ModalContent>
@@ -96,6 +97,8 @@ const ModalTextContent = styled.div`
   max-height: 500px;
   width: 90%;
   padding: 10px;
+  padding-bottom: 60px;
+  box-sizing: border-box;
   position: relative;
   overflow: scroll;
 `;
