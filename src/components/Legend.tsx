@@ -30,6 +30,7 @@ export default function Legend({ data }: Props) {
       ref={drag}
       isDragging={isDragging}
       largeVisual={largeVisual}
+      isDesktop={isDesktop}
     >
       <LegendNav
         data={data}
@@ -51,20 +52,23 @@ interface LegendWrapper {
   showVisualLegend: boolean;
   isDragging: boolean;
   largeVisual: boolean;
+  isDesktop: boolean;
 }
+
 const LegendWrapper = styled.div`
   background: white;
   width: 800px;
   margin: auto;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 70px 120px 30px 120px;
-  height: ${({ showVisualLegend, largeVisual }: LegendWrapper) => {
-    const openHeight = largeVisual ? "300px" : "150px";
-    return showVisualLegend ? openHeight : "20px";
-  }};
   transition: height 1s;
   overflow: hidden;
   opacity: ${({ isDragging }: LegendWrapper) => (isDragging ? 0.2 : 1)};
+  height: ${({ showVisualLegend, largeVisual, isDesktop }: LegendWrapper) => {
+    const openHeight = largeVisual ? "350px" : "200px";
+    const closedHeight = isDesktop ? "60px" : "60px";
+    return showVisualLegend ? openHeight : closedHeight;
+  }};
   @media only screen and (max-width: 768px) {
     width: 90%;
     padding: 70px 20px 30px 20px;
