@@ -1,24 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function Tooltip({ text, showTooltip }) {
+export default function Tooltip({ text, showTooltip, orientation }) {
   if (!showTooltip) return null;
   return (
-    <TooltipWrapper>
-      <p>{text}</p>
-      <Tag />
+    <TooltipWrapper orientation={orientation}>
+      <PStyled>{text}</PStyled>
+      <Tag orientation={orientation} />
     </TooltipWrapper>
   );
+}
+
+export enum Orientation {
+  right = "right",
+  left = "left"
+}
+
+interface TooltipWrapper {
+  orientation: Orientation;
 }
 
 const TooltipWrapper = styled.div`
   border: 1px solid grey;
   z-index: 1;
   position: absolute;
-  top: -70px;
+  top: -55px;
   padding: 0 20px;
-  width: 100px;
+  width: fit-content;
   border-radius: 2px;
+  ${({ orientation }: TooltipWrapper) =>
+    orientation === "left" ? "right: 10px" : "left: 10px"}
 `;
 
 const Tag = styled.div`
@@ -30,5 +41,10 @@ const Tag = styled.div`
   position: absolute;
   background: white;
   bottom: -7px;
-  left: 7px;
+  ${({ orientation }: TooltipWrapper) =>
+    orientation === "left" ? "right: 7px" : "left: 7px"}
+`;
+
+const PStyled = styled.p`
+  white-space: nowrap;
 `;

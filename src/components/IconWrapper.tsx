@@ -1,24 +1,30 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Tooltip from "./Tooltip";
+import Tooltip, { Orientation } from "./Tooltip";
 
 interface Props {
   icon: string;
   tooltipText: string;
   onClick?: () => void;
   style?: any;
+  orientation: Orientation;
 }
 export default function IconWrapper({
   icon,
   tooltipText,
   onClick,
-  style
+  style,
+  orientation
 }: Props) {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
     <Wrapper>
-      <Tooltip text={tooltipText} showTooltip={showTooltip} />
+      <Tooltip
+        text={tooltipText}
+        showTooltip={showTooltip}
+        orientation={orientation}
+      />
       <IconStyled
         src={icon}
         onMouseEnter={() => setShowTooltip(true)}
@@ -39,5 +45,4 @@ const IconStyled = styled.img`
   height: 20px;
   cursor: pointer;
   margin: 15px;
-  margin-left: 0;
 `;
