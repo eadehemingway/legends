@@ -14,7 +14,12 @@ export function Legends() {
       .get(
         "https://raw.githubusercontent.com/Vizzuality/front-end-code-challenge/master/data.json"
       )
-      .then(({ data }) => setLegendData(data));
+      .then(({ data }) => {
+        const sortedData = data.sort((a, b) =>
+          a.type < b.type ? -1 : a.type > b.type ? 1 : 0
+        );
+        setLegendData(sortedData);
+      });
   }, []);
 
   function moveItem(id, position) {
@@ -31,8 +36,8 @@ export function Legends() {
       {legendData.length &&
         legendData.map((d, i) => {
           return (
-            <LegendSpace position={i} moveItem={moveItem}>
-              <Legend data={d} key={i} />
+            <LegendSpace key={i} position={i} moveItem={moveItem}>
+              <Legend data={d} />
             </LegendSpace>
           );
         })}

@@ -12,13 +12,13 @@ interface Props {
 export default function LegendVisual({ data }: Props) {
   switch (data.type) {
     case LegendType.basic:
-      return <Basic />;
+      return <Basic data={data} />;
     case LegendType.gradient:
-      return <Gradient />;
+      return <Gradient data={data} />;
     case LegendType.choropleth:
-      return <Choropleth />;
+      return <Choropleth data={data} />;
     case LegendType.timeline:
-      return <Timeline />;
+      return <Timeline data={data} />;
     default:
       return <p>no legend</p>;
   }

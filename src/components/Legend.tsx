@@ -20,7 +20,7 @@ interface Props {
 export default function Legend({ data }: Props) {
   const [showMore, setShowMore] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [showVisualLegend, setShowVisualLegend] = useState(false);
+  const [showVisualLegend, setShowVisualLegend] = useState(true);
 
   const [{ isDragging }, drag] = useDrag({
     item: { type: "legend", id: data.id },
@@ -72,8 +72,8 @@ export default function Legend({ data }: Props) {
       >
         <CrossIconStyled src={cross} onClick={() => setModalOpen(false)} />
         <h2>{data.name}</h2>
-        {arrOfDescriptionNodes.map(t => (
-          <p>{t.innerHTML}</p>
+        {arrOfDescriptionNodes.map((t, i) => (
+          <p key={i}>{t.innerHTML}</p>
         ))}
       </Modal>
     </LegendWrapper>
