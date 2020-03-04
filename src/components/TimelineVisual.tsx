@@ -50,11 +50,23 @@ export default function Timeline({ data, isDesktop }) {
       .attr("stroke", purple)
       .attr("stroke-width", lineStrokeWidth);
 
-    const drag = d3.drag().on("drag", function() {
-      const handleClass = d3.select(this).attr("class");
+    function dragHandle(selection) {
+      const handleClass = selection.attr("class");
       const minMax = handleClass.split("-")[0];
       dragged(d3.event.x, minMax);
-    });
+    }
+
+    const drag = d3
+      .drag()
+      .on("start", function() {
+        dragHandle(d3.select(this));
+      })
+      .on("drag", function() {
+        dragHandle(d3.select(this));
+      })
+      .on("end", function() {
+        dragHandle(d3.select(this));
+      });
 
     const handleRadius = 8;
     const minHandle = sliderGroup
