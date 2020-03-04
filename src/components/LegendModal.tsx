@@ -74,6 +74,7 @@ interface LegendWrapper {
   isDragging: boolean;
   largeVisual: boolean;
 }
+
 const LegendWrapper = styled.div`
   background: white;
   width: 800px;

@@ -7,10 +7,10 @@ interface DroppedItem {
   type: string;
 }
 
-export default function LegendSpace({ children, position, moveItem }) {
+export default function LegendSpace({ children, position, moveLegend }) {
   const [{ isOver }, drop] = useDrop({
     accept: "legend",
-    drop: (droppedItem: DroppedItem) => moveItem(droppedItem.id, position),
+    drop: (droppedItem: DroppedItem) => moveLegend(droppedItem.id, position),
     collect: monitor => ({
       isOver: !!monitor.isOver()
     })

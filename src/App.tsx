@@ -2,15 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 import "./App.css";
-
 import "./assets/fonts/OpenSans-Regular.ttf";
 import { Legends } from "./components/Legends";
 
-function App() {
+export default function App() {
   return (
     <AppWrapper>
       <Legends />
-      {/* rest of app */}
     </AppWrapper>
   );
 }
@@ -20,10 +18,8 @@ const AppWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 1500px;
-
+  height: 1400px;
   @media only screen and (max-width: 768px) {
     margin-top: 0px;
   }
 `;
-export default App;
