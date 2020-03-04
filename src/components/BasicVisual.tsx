@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import * as d3 from "d3";
 
-export default function Basic({ data }) {
+export default function Basic({ data, isDesktop }) {
   useEffect(() => {
-    const svgWidth = 850;
+    const svgWidth = isDesktop ? 850 : 300;
     const svgHeight = 400;
-    const margin = 50;
+    const margin = isDesktop ? 50 : 20;
     const svg = d3
       .select("#basic-svg")
       .attr("width", svgWidth)
@@ -33,8 +33,11 @@ export default function Basic({ data }) {
       .text(d => d.name)
       .attr("x", 18)
       .attr("y", 5)
-      .attr("font-family", "OpenSans");
-  }, [data.items]);
+      .attr("font-family", "OpenSans")
+      .attr("font-size", () => {
+        return isDesktop ? "14" : "12";
+      });
+  }, [data.items, isDesktop]);
 
   return (
     <>

@@ -39,6 +39,16 @@ export default function Legend({ data }: Props) {
   const modalContentStyle = { width: 600, margin: "auto", padding: 40 };
   const arrowTransform = showVisualLegend ? "rotate(180deg)" : "rotate(0deg)";
   const largeVisual = data.type === "basic" || data.type === "gradient";
+
+  function onChangeInfo() {
+    setModalOpen(true);
+  }
+  function onChangeVisibility() {
+    setShowMore(!showMore);
+  }
+  function onChangeCollapse() {
+    setShowVisualLegend(!showVisualLegend);
+  }
   return (
     <LegendWrapper
       showVisualLegend={showVisualLegend}
@@ -53,19 +63,19 @@ export default function Legend({ data }: Props) {
         </LeftNav>
         <RightNav>
           <IconWrapper
-            onClick={() => setShowMore(!showMore)}
+            onClick={onChangeVisibility}
             icon={showMore ? hide : show}
             tooltipText={showMore ? "Hide layer" : "Show layer"}
           />
           <IconWrapper
             icon={info}
-            onClick={() => setModalOpen(true)}
+            onClick={onChangeInfo}
             tooltipText="Layer info"
           />
           <IconWrapper
             icon={arrowDown}
             style={{ transition: "transform 0.5s", transform: arrowTransform }}
-            onClick={() => setShowVisualLegend(!showVisualLegend)}
+            onClick={onChangeCollapse}
             tooltipText={showVisualLegend ? "Collapse layer" : "Expand layer"}
           />
         </RightNav>
@@ -115,6 +125,10 @@ const LegendWrapper = styled.div`
   transition: height 1s;
   overflow: hidden;
   opacity: ${({ isDragging }: LegendWrapper) => (isDragging ? 0.2 : 1)};
+  @media only screen and (max-width: 768px) {
+    width: 90%;
+    padding: 70px 20px 30px 20px;
+  }
 `;
 const NavWrapper = styled.div`
   display: flex;

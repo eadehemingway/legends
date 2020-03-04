@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import * as d3 from "d3";
 
-export default function Choropleth({ data }) {
+export default function Choropleth({ data, isDesktop }) {
   useEffect(() => {
-    const svgWidth = 850;
+    const svgWidth = isDesktop ? 850 : 300;
     const svgHeight = 100;
-    const margin = 50;
+    const margin = isDesktop ? 50 : 20;
     const chloroplethWidth = svgWidth - margin;
     const svg = d3
       .select("#choropleth-svg")
@@ -39,9 +39,12 @@ export default function Choropleth({ data }) {
     groups
       .append("text")
       .text(d => d.name)
-      .attr("x", 20)
-      .attr("y", 30);
-  }, [data.items]);
+      .attr("x", margin / 2)
+      .attr("y", 30)
+      .attr("font-size", () => {
+        return isDesktop ? "14" : "12";
+      });
+  }, [data.items, isDesktop]);
 
   return (
     <>

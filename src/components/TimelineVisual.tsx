@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import moment from "moment";
 
-export default function Timeline({ data }) {
+export default function Timeline({ data, isDesktop }) {
   const { minDate, maxDate, step, speed, dateFormat } = data.timeline;
   const minYearInRange = moment(minDate).format(dateFormat);
   const maxYearInRange = moment(maxDate).format(dateFormat);
@@ -11,9 +11,9 @@ export default function Timeline({ data }) {
 
   useEffect(() => {
     const rangeValues = d3.range(minYearInRange, maxYearInRange + step, step);
-    const svgWidth = 850;
+    const svgWidth = isDesktop ? 850 : 300;
     const svgHeight = 100;
-    const margin = 50;
+    const margin = isDesktop ? 50 : 20;
     const sliderWidth = svgWidth - margin;
     const xScale = d3
       .scaleLinear()
@@ -81,14 +81,20 @@ export default function Timeline({ data }) {
       .attr("class", "min-text")
       .attr("opacity", textOpacity)
       .attr("transform", "translate(0, 30)")
-      .text(minYear);
+      .text(minYear)
+      .attr("font-size", () => {
+        return isDesktop ? "14" : "12";
+      });
 
     const maxText = sliderGroup
       .append("text")
       .attr("class", "max-text")
       .attr("opacity", textOpacity)
       .attr("transform", `translate(${sliderWidth - 30},30)`)
-      .text(maxYear);
+      .text(maxYear)
+      .attr("font-size", () => {
+        return isDesktop ? "14" : "12";
+      });
 
     function dragged(oldXCoordinate, minOrMax) {
       const oldDateVal = xScale.invert(oldXCoordinate);
@@ -140,6 +146,7 @@ export default function Timeline({ data }) {
     }
   }, [
     data.items,
+    isDesktop,
     maxYear,
     maxYearInRange,
     minYear,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import styled from "styled-components";
 
-export default function Gradient({ data }) {
+export default function Gradient({ data, isDesktop }) {
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState("");
 
@@ -11,9 +11,9 @@ export default function Gradient({ data }) {
     setText(text);
   }, []);
   useEffect(() => {
-    const svgWidth = 850;
+    const svgWidth = isDesktop ? 850 : 300;
     const svgHeight = 100;
-    const margin = 50;
+    const margin = isDesktop ? 50 : 20;
     const gradientWidth = svgWidth - margin;
     const svg = d3
       .select("#Gradient-svg")
@@ -54,8 +54,11 @@ export default function Gradient({ data }) {
         const wordLength = 30;
         return i ? gradientWidth - wordLength : wordLength;
       })
-      .attr("y", margin + 30);
-  }, [data.items]);
+      .attr("y", margin + 30)
+      .attr("font-size", () => {
+        return isDesktop ? "14" : "12";
+      });
+  }, [data.items, isDesktop]);
 
   function handleSubmit() {
     setShowInput(false);
@@ -93,11 +96,15 @@ const ButtonStyled = styled.button`
   outline: none;
   cursor: pointer;
   border: none;
+  background: none;
   text-decoration: underline;
   font-size: 16px;
   color: blue;
   padding: 0;
   padding-left: 15px;
+  @media only screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const InputStyled = styled.input`
@@ -108,12 +115,18 @@ const InputStyled = styled.input`
   margin-top: 30px;
   margin-bottom: 20px;
   padding: 15px;
+  @media only screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const PStyled = styled.p`
   font-size: 16px;
   margin-top: 30px;
   margin-bottom: 20px;
-
   padding: 15px;
+  @media only screen and (max-width: 768px) {
+    font-size: 12px;
+    margin: 0px;
+  }
 `;
