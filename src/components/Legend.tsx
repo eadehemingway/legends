@@ -9,6 +9,7 @@ import hide from "../assets/icons/hide.svg";
 import info from "../assets/icons/info.svg";
 import show from "../assets/icons/show.svg";
 import cross from "../assets/icons/cross.svg";
+import LegendVisual from "./LegendVisual";
 
 interface Props {
   data: legendData;
@@ -17,6 +18,7 @@ interface Props {
 export default function Legend({ data }: Props) {
   const [showMore, setShowMore] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [showVisualLegend, setShowVisualLegend] = useState(false);
 
   Modal.setAppElement("body");
   const { description } = data;
@@ -26,8 +28,9 @@ export default function Legend({ data }: Props) {
   parsedDesc.body.childNodes.forEach(c => arrOfDescriptionNodes.push(c));
 
   const modalContentStyle = { width: 600, margin: "auto", padding: 40 };
+
   return (
-    <LegendWrapper>
+    <LegendWrapper showVisualLegend={showVisualLegend}>
       <NavWrapper>
         <IconStyled src={dragDots} />
         <PStyled>{data.name}</PStyled>
@@ -36,8 +39,13 @@ export default function Legend({ data }: Props) {
           src={showMore ? hide : show}
         />
         <IconStyled src={info} onClick={() => setModalOpen(true)} />
-        <IconStyled src={arrowDown} />
+        <ArrowIconStyled
+          src={arrowDown}
+          showVisualLegend={showVisualLegend}
+          onClick={() => setShowVisualLegend(!showVisualLegend)}
+        />
       </NavWrapper>
+      <LegendVisual data={data} />
       <Modal
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}
@@ -62,10 +70,28 @@ const CrossIconStyled = styled(IconStyled)`
   position: absolute;
   right: 30px;
 `;
+
+interface ArrowIconStyled {
+  showVisualLegend: boolean;
+}
+
+const ArrowIconStyled = styled(IconStyled)`
+  transform: ${({ showVisualLegend }: ArrowIconStyled) =>
+    showVisualLegend ? "rotate(180deg)" : "rotate(0deg)"};
+  transition: transform 0.5s;
+`;
+
+interface LegendWrapper {
+  showVisualLegend: boolean;
+}
 const LegendWrapper = styled.div`
   width: 70%;
   border: 5px solid coral;
   padding: 50px;
+  height: ${({ showVisualLegend }: LegendWrapper) =>
+    showVisualLegend ? "300px" : "20px"};
+  transition: height 1s;
+  overflow: hidden;
 `;
 const NavWrapper = styled.div`
   width: 70%;
