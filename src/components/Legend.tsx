@@ -50,18 +50,18 @@ export default function Legend({ data }: Props) {
         <IconWrapper
           onClick={() => setShowMore(!showMore)}
           icon={showMore ? hide : show}
-          tooltipText={showMore ? "hide" : "show"}
+          tooltipText={showMore ? "Hide layer" : "Show layer"}
         />
         <IconWrapper
           icon={info}
           onClick={() => setModalOpen(true)}
-          tooltipText="more info"
+          tooltipText="Layer info"
         />
         <IconWrapper
           icon={arrowDown}
           style={{ transition: "transform 0.5s", transform: arrowTransform }}
           onClick={() => setShowVisualLegend(!showVisualLegend)}
-          tooltipText="show legend"
+          tooltipText={showVisualLegend ? "Collapse layer" : "Expand layer"}
         />
       </NavWrapper>
       <LegendVisual data={data} />
