@@ -19,6 +19,13 @@ export default function Legend({ data }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
 
   Modal.setAppElement("body");
+  const { description } = data;
+  const parser = new DOMParser();
+  const parsedDesc = parser.parseFromString(description, "text/html");
+  const arrOfDescriptionNodes = [];
+  parsedDesc.body.childNodes.forEach(c => arrOfDescriptionNodes.push(c));
+
+  const modalContentStyle = { width: 600, margin: "auto", padding: 40 };
   return (
     <LegendWrapper>
       <NavWrapper>
@@ -31,10 +38,16 @@ export default function Legend({ data }: Props) {
         <IconStyled src={info} onClick={() => setModalOpen(true)} />
         <IconStyled src={arrowDown} />
       </NavWrapper>
-      <Modal isOpen={modalOpen} onRequestClose={() => setModalOpen(false)}>
-        <IconStyled src={cross} onClick={() => setModalOpen(false)} />
-
-        <p> hiiii</p>
+      <Modal
+        isOpen={modalOpen}
+        onRequestClose={() => setModalOpen(false)}
+        style={{ content: modalContentStyle }}
+      >
+        <CrossIconStyled src={cross} onClick={() => setModalOpen(false)} />
+        <h2>{data.name}</h2>
+        {arrOfDescriptionNodes.map(t => (
+          <p>{t.innerHTML}</p>
+        ))}
       </Modal>
     </LegendWrapper>
   );
@@ -44,6 +57,10 @@ const IconStyled = styled.img`
   width: 20px;
   height: 20px;
   cursor: pointer;
+`;
+const CrossIconStyled = styled(IconStyled)`
+  position: absolute;
+  right: 30px;
 `;
 const LegendWrapper = styled.div`
   width: 70%;
