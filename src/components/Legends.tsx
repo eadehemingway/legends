@@ -14,6 +14,9 @@ export function Legends() {
   }, []);
 
   return (
-    <div>{legendData.length && legendData.map(d => <Legend data={d} />)}</div>
+    <div>
+      {legendData.length &&
+        legendData.map((d, i) => <Legend data={d} key={i} />)}
+    </div>
   );
 }
