@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import styled from "styled-components";
+import getSvgWidth from "./getSvgWidth";
 
 export default function Gradient({ data, isDesktop }) {
   const [showInput, setShowInput] = useState(false);
@@ -11,9 +12,7 @@ export default function Gradient({ data, isDesktop }) {
     setText(text);
   }, []);
   useEffect(() => {
-    const windowWidth = window.innerWidth;
-    const outerMargin = isDesktop ? 100 : 80;
-    const svgWidth = windowWidth - outerMargin;
+    const svgWidth = getSvgWidth();
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
     const gradientWidth = svgWidth - margin;
@@ -57,9 +56,7 @@ export default function Gradient({ data, isDesktop }) {
         return i ? gradientWidth - wordLength : wordLength;
       })
       .attr("y", margin + 30)
-      .attr("font-size", () => {
-        return isDesktop ? "14" : "12";
-      });
+      .attr("font-size", () => (isDesktop ? "14" : "12"));
   }, [data.items, isDesktop]);
 
   function handleSubmit() {
@@ -69,7 +66,6 @@ export default function Gradient({ data, isDesktop }) {
   return (
     <>
       <svg id="Gradient-svg"></svg>
-
       {!showInput && (
         <TextContainer>
           <PStyled>{text}</PStyled>
@@ -79,7 +75,6 @@ export default function Gradient({ data, isDesktop }) {
           </ButtonStyled>
         </TextContainer>
       )}
-
       {showInput && (
         <TextContainer>
           <InputStyled
@@ -87,7 +82,6 @@ export default function Gradient({ data, isDesktop }) {
             onChange={({ target }) => setText(target.value)}
             ref={input => input && input.focus()}
           />
-
           <ButtonStyled onClick={handleSubmit}>submit</ButtonStyled>
         </TextContainer>
       )}

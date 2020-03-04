@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import moment from "moment";
+import getSvgWidth from "./getSvgWidth";
 
 export default function Timeline({ data, isDesktop }) {
   const { minDate, maxDate, step, speed, dateFormat } = data.timeline;
@@ -11,9 +12,7 @@ export default function Timeline({ data, isDesktop }) {
 
   useEffect(() => {
     const rangeValues = d3.range(minYearInRange, maxYearInRange + step, step);
-    const windowWidth = window.innerWidth;
-    const outerMargin = isDesktop ? 100 : 50;
-    const svgWidth = windowWidth - outerMargin;
+    const svgWidth = getSvgWidth();
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
     const sliderWidth = svgWidth - margin;
@@ -41,7 +40,6 @@ export default function Timeline({ data, isDesktop }) {
       .attr("x1", xScale(minYearInRange))
       .attr("x2", xScale(maxYearInRange))
       .attr("stroke", grey)
-      .attr("stroke-width", lineStrokeWidth)
       .attr("stroke-linecap", "round");
 
     const innerTrack = sliderGroup
@@ -49,8 +47,9 @@ export default function Timeline({ data, isDesktop }) {
       .attr("x1", xScale(minYear))
       .attr("x2", xScale(maxYear))
       .attr("class", "inner-track")
-      .attr("stroke", purple)
-      .attr("stroke-width", lineStrokeWidth);
+      .attr("stroke", purple);
+
+    svg.selectAll("line").attr("stroke-width", lineStrokeWidth);
 
     function dragHandle(selection) {
       const handleClass = selection.attr("class");
@@ -74,41 +73,38 @@ export default function Timeline({ data, isDesktop }) {
     const minHandle = sliderGroup
       .append("circle")
       .attr("class", "min-handle")
-      .attr("r", handleRadius)
       .attr("cx", xScale(minYear))
-      .attr("fill", purple)
-      .attr("cursor", "pointer")
       .call(e => drag(e, "min"));
 
     const maxHandle = sliderGroup
       .append("circle")
       .attr("class", "max-handle")
-      .attr("r", handleRadius)
       .attr("cx", xScale(maxYear))
-      .attr("fill", purple)
-      .attr("cursor", "pointer")
       .call(e => drag(e, "max"));
+
+    svg
+      .selectAll("circle")
+      .attr("cursor", "pointer")
+      .attr("fill", purple)
+      .attr("r", handleRadius);
 
     const textOpacity = 0.7;
     const minText = sliderGroup
       .append("text")
       .attr("class", "min-text")
-      .attr("opacity", textOpacity)
       .attr("transform", "translate(0, 30)")
-      .text(minYear)
-      .attr("font-size", () => {
-        return isDesktop ? "14" : "12";
-      });
+      .text(minYear);
 
     const maxText = sliderGroup
       .append("text")
       .attr("class", "max-text")
-      .attr("opacity", textOpacity)
       .attr("transform", `translate(${sliderWidth - 30},30)`)
-      .text(maxYear)
-      .attr("font-size", () => {
-        return isDesktop ? "14" : "12";
-      });
+      .text(maxYear);
+
+    svg
+      .selectAll("text")
+      .attr("opacity", textOpacity)
+      .attr("font-size", () => (isDesktop ? "14" : "12"));
 
     function dragged(oldXCoordinate, minOrMax) {
       const oldDateVal = xScale.invert(oldXCoordinate);
@@ -130,9 +126,9 @@ export default function Timeline({ data, isDesktop }) {
         handle
           .transition()
           .duration(speed)
-          .attrTween("cx", function() {
-            return d3.interpolate(oldXCoordinate, newXCoordinate);
-          });
+          .attrTween("cx", () =>
+            d3.interpolate(oldXCoordinate, newXCoordinate)
+          );
         text.text(newDateVal);
       }
       const minimumLessThanMaximum = minOrMax === "min" && maxYear > newDateVal;

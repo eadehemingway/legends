@@ -58,6 +58,7 @@ interface LegendWrapper {
 const LegendWrapper = styled.div`
   background: white;
   width: 800px;
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;

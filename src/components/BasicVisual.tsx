@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import * as d3 from "d3";
 
+import getSvgWidth from "./getSvgWidth";
+
 export default function Basic({ data, isDesktop }) {
   useEffect(() => {
-    const windowWidth = window.innerWidth;
-    const outerMargin = isDesktop ? 100 : 50;
-    const svgWidth = windowWidth - outerMargin;
+    const svgWidth = getSvgWidth();
     const svgHeight = 400;
     const margin = isDesktop ? 50 : 20;
     const svg = d3
@@ -19,9 +19,7 @@ export default function Basic({ data, isDesktop }) {
       .data(data.items)
       .enter()
       .append("g")
-      .attr("transform", (d, i) => {
-        return `translate(${margin},${20 * i + margin})`;
-      });
+      .attr("transform", (d, i) => `translate(${margin},${20 * i + margin})`);
 
     groups
       .append("circle")
@@ -36,9 +34,7 @@ export default function Basic({ data, isDesktop }) {
       .attr("x", 18)
       .attr("y", 5)
       .attr("font-family", "OpenSans")
-      .attr("font-size", () => {
-        return isDesktop ? "14" : "12";
-      });
+      .attr("font-size", () => (isDesktop ? "14" : "12"));
   }, [data.items, isDesktop]);
 
   return (

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import * as d3 from "d3";
 
+import getSvgWidth from "./getSvgWidth";
+
 export default function Choropleth({ data, isDesktop }) {
   useEffect(() => {
-    const windowWidth = window.innerWidth;
-    const outerMargin = isDesktop ? 100 : 50;
-    const svgWidth = windowWidth - outerMargin;
+    const svgWidth = getSvgWidth();
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
     const chloroplethWidth = svgWidth - margin;
@@ -21,9 +21,10 @@ export default function Choropleth({ data, isDesktop }) {
       .data(data.items)
       .enter()
       .append("g")
-      .attr("transform", (d, i) => {
-        return `translate(${rectWidth * i + margin / 2},${margin})`;
-      });
+      .attr(
+        "transform",
+        (d, i) => `translate(${rectWidth * i + margin / 2},${margin})`
+      );
 
     groups
       .append("rect")
@@ -31,21 +32,14 @@ export default function Choropleth({ data, isDesktop }) {
       .attr("y", 0)
       .attr("width", rectWidth)
       .attr("height", 10)
-      .style("fill", d => {
-        if (d.color === "#FFFFFF") {
-          return "#F0F0F0";
-        }
-        return d.color;
-      });
+      .style("fill", d => (d.color === "#FFFFFF" ? "#F0F0F0" : d.color));
 
     groups
       .append("text")
       .text(d => d.name)
       .attr("x", margin / 2)
       .attr("y", 30)
-      .attr("font-size", () => {
-        return isDesktop ? "14" : "12";
-      });
+      .attr("font-size", () => (isDesktop ? "14" : "12"));
   }, [data.items, isDesktop]);
 
   return (
