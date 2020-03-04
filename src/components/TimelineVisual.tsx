@@ -11,7 +11,9 @@ export default function Timeline({ data, isDesktop }) {
 
   useEffect(() => {
     const rangeValues = d3.range(minYearInRange, maxYearInRange + step, step);
-    const svgWidth = isDesktop ? 850 : 300;
+    const windowWidth = window.innerWidth;
+    const outerMargin = isDesktop ? 100 : 50;
+    const svgWidth = windowWidth - outerMargin;
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
     const sliderWidth = svgWidth - margin;

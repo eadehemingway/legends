@@ -58,7 +58,9 @@ interface LegendWrapper {
 const LegendWrapper = styled.div`
   background: white;
   width: 800px;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 70px 120px 30px 120px;
   transition: height 1s;
@@ -71,6 +73,6 @@ const LegendWrapper = styled.div`
   }};
   @media only screen and (max-width: 768px) {
     width: 90%;
-    padding: 70px 20px 30px 20px;
+    padding: 10px 20px 30px 20px;
   }
 `;

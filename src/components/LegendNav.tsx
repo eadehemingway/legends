@@ -74,6 +74,7 @@ export default function Legend({
 
 const NavWrapper = styled.div`
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   height: 100px;
@@ -93,5 +94,10 @@ const RightNav = styled.div`
 const PStyled = styled.p`
   font-family: OpenSans;
   font-size: 18px;
-  margin-top: 10px;
+  margin: 10px 10px 0 10px;
+
+  @media only screen and (max-width: 768px) {
+    font-size: 12px;
+    margin-top: 0;
+  }
 `;

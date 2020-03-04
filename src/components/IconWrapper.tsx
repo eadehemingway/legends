@@ -38,6 +38,8 @@ export default function IconWrapper({
 
 const Wrapper = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
 `;
 
 const IconStyled = styled.img`
@@ -45,4 +47,9 @@ const IconStyled = styled.img`
   height: 20px;
   cursor: pointer;
   margin: 15px;
+  @media only screen and (max-width: 768px) {
+    margin: 5px;
+    width: 15px;
+    height: 15px;
+  }
 `;

@@ -29,5 +29,6 @@ interface Wrapper {
 }
 const Wrapper = styled.div`
   padding: 10px;
+  width: 100%;
   background: ${({ isOver }: Wrapper) => (isOver ? "#E8E8E8" : "none")};
 `;

@@ -11,7 +11,9 @@ export default function Gradient({ data, isDesktop }) {
     setText(text);
   }, []);
   useEffect(() => {
-    const svgWidth = isDesktop ? 850 : 300;
+    const windowWidth = window.innerWidth;
+    const outerMargin = isDesktop ? 100 : 80;
+    const svgWidth = windowWidth - outerMargin;
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
     const gradientWidth = svgWidth - margin;

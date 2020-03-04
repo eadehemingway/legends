@@ -3,7 +3,9 @@ import * as d3 from "d3";
 
 export default function Basic({ data, isDesktop }) {
   useEffect(() => {
-    const svgWidth = isDesktop ? 850 : 300;
+    const windowWidth = window.innerWidth;
+    const outerMargin = isDesktop ? 100 : 50;
+    const svgWidth = windowWidth - outerMargin;
     const svgHeight = 400;
     const margin = isDesktop ? 50 : 20;
     const svg = d3
