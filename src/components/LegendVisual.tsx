@@ -20,6 +20,6 @@ export default function LegendVisual({ data }: Props) {
     case LegendType.timeline:
       return <Timeline data={data} />;
     default:
-      return <p>no legend</p>;
+      return null;
   }
 }

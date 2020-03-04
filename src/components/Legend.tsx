@@ -41,7 +41,7 @@ export default function Legend({ data }: Props) {
   return (
     <LegendWrapper
       showVisualLegend={showVisualLegend}
-      ref={drag}
+      // ref={drag}
       isDragging={isDragging}
     >
       <NavWrapper>
