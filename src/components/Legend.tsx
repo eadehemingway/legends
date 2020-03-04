@@ -38,7 +38,7 @@ export default function Legend({ data }: Props) {
 
   const modalContentStyle = { width: 600, margin: "auto", padding: 40 };
   const arrowTransform = showVisualLegend ? "rotate(180deg)" : "rotate(0deg)";
-  const largeVisual = data.type === "basic";
+  const largeVisual = data.type === "basic" || data.type === "gradient";
   return (
     <LegendWrapper
       showVisualLegend={showVisualLegend}

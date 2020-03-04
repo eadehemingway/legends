@@ -1,10 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
+import styled from "styled-components";
 
 export default function Gradient({ data }) {
+  const [showInput, setShowInput] = useState(false);
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    const text = localStorage.getItem("text");
+    setText(text);
+  }, []);
   useEffect(() => {
     const svgWidth = 850;
-    const svgHeight = 200;
+    const svgHeight = 100;
     const margin = 50;
     const gradientWidth = svgWidth - margin;
     const svg = d3
@@ -49,9 +57,63 @@ export default function Gradient({ data }) {
       .attr("y", margin + 30);
   }, [data.items]);
 
+  function handleSubmit() {
+    setShowInput(false);
+    localStorage.setItem("text", text);
+  }
   return (
     <>
       <svg id="Gradient-svg"></svg>
+
+      {!showInput && (
+        <div>
+          <PStyled>{text}</PStyled>
+          <ButtonStyled onClick={() => setShowInput(true)}>
+            {" "}
+            {text ? "edit" : "add"} text
+          </ButtonStyled>
+        </div>
+      )}
+
+      {showInput && (
+        <div>
+          <InputStyled
+            value={text}
+            onChange={({ target }) => setText(target.value)}
+          />
+
+          <ButtonStyled onClick={handleSubmit}>submit</ButtonStyled>
+        </div>
+      )}
     </>
   );
 }
+
+const ButtonStyled = styled.button`
+  outline: none;
+  cursor: pointer;
+  border: none;
+  text-decoration: underline;
+  font-size: 16px;
+  color: blue;
+  padding: 0;
+  padding-left: 15px;
+`;
+
+const InputStyled = styled.input`
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  padding: 15px;
+`;
+
+const PStyled = styled.p`
+  font-size: 16px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+
+  padding: 15px;
+`;

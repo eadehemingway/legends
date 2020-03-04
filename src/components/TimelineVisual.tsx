@@ -11,7 +11,7 @@ export default function Timeline({ data }) {
   useEffect(() => {
     const rangeValues = d3.range(minYearInRange, maxYearInRange + step, step);
     const svgWidth = 850;
-    const svgHeight = 200;
+    const svgHeight = 100;
     const margin = 50;
     const sliderWidth = svgWidth - margin;
     const xScale = d3

@@ -4,7 +4,7 @@ import * as d3 from "d3";
 export default function Choropleth({ data }) {
   useEffect(() => {
     const svgWidth = 850;
-    const svgHeight = 200;
+    const svgHeight = 100;
     const margin = 50;
     const chloroplethWidth = svgWidth - margin;
     const svg = d3
