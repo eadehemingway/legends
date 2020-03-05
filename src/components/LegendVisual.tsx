@@ -1,8 +1,8 @@
 import React from "react";
-import Basic from "./BasicVisual";
-import Gradient from "./GradientVisual";
-import Choropleth from "./ChoroplethVisual";
-import Timeline from "./TimelineVisual";
+import Basic from "./LegendBasicVisual";
+import Gradient from "./LegendGradientVisual";
+import Choropleth from "./LegendChoroplethVisual";
+import Timeline from "./LegendTimelineVisual";
 import { legendData, LegendType } from "../types";
 
 interface Props {
