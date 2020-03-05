@@ -3,21 +3,28 @@ import * as d3 from "d3";
 import styled from "styled-components";
 import getSvgWidth from "./getSvgWidth";
 
-export default function Gradient({ data, isDesktop }) {
+export default function Gradient({ data, isDesktop, windowWidth }) {
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState("");
+
+  function initialDrawing() {
+    const svg = d3.select("#gradient-svg");
+    svg.append("rect").attr("class", "legend-bar");
+  }
 
   useEffect(() => {
     const text = localStorage.getItem("text");
     setText(text);
+    initialDrawing();
   }, []);
   useEffect(() => {
-    const svgWidth = getSvgWidth();
+    const svgWidth = getSvgWidth(isDesktop, windowWidth);
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
     const gradientWidth = svgWidth - margin;
+
     const svg = d3
-      .select("#Gradient-svg")
+      .select("#gradient-svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
@@ -38,26 +45,31 @@ export default function Gradient({ data, isDesktop }) {
       .attr("stop-color", d => d.color);
 
     svg
-      .append("rect")
+      .selectAll(".legend-bar")
       .attr("x", margin / 2)
       .attr("y", margin)
-      .attr("width", gradientWidth)
       .attr("height", 10)
+      .attr("width", gradientWidth)
       .style("fill", "url(#linear-gradient)");
 
-    svg
-      .selectAll("text")
-      .data(data.items)
+    const textSelection = svg.selectAll("text").data(data.items);
+
+    const enterSelection = textSelection
       .enter()
       .append("text")
-      .text(d => d.name)
+      .text(d => d.name);
+
+    const textUpdateSelection = textSelection.merge(enterSelection);
+
+    textUpdateSelection
       .attr("x", (d, i) => {
-        const wordLength = 30;
-        return i ? gradientWidth - wordLength : wordLength;
+        const wordWidth = 30;
+        if (i === 0) return wordWidth;
+        return gradientWidth - wordWidth;
       })
       .attr("y", margin + 30)
       .attr("font-size", () => (isDesktop ? "14" : "12"));
-  }, [data.items, isDesktop]);
+  }, [data.items, isDesktop, windowWidth]);
 
   function handleSubmit() {
     setShowInput(false);
@@ -65,7 +77,7 @@ export default function Gradient({ data, isDesktop }) {
   }
   return (
     <>
-      <svg id="Gradient-svg"></svg>
+      <svg id="gradient-svg"></svg>
       {!showInput && (
         <TextContainer>
           <PStyled>{text}</PStyled>

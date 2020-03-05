@@ -9,11 +9,15 @@ interface Props {
   data: legendData;
   modalOpen: boolean;
   setModalOpen: (a: boolean) => void;
+  isDesktop: boolean;
 }
 
-export default function LegendModal({ data, modalOpen, setModalOpen }: Props) {
-  const isDesktop = window.innerWidth > 768;
-
+export default function LegendModal({
+  data,
+  modalOpen,
+  setModalOpen,
+  isDesktop
+}: Props) {
   Modal.setAppElement("body");
   const { description } = data;
   const parser = new DOMParser();

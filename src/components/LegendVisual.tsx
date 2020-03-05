@@ -8,18 +8,31 @@ import { legendData, LegendType } from "../types";
 interface Props {
   data: legendData;
   isDesktop: boolean;
+  windowWidth: number;
 }
 
-export default function LegendVisual({ data, isDesktop }: Props) {
+export default function LegendVisual({ data, isDesktop, windowWidth }: Props) {
   switch (data.type) {
     case LegendType.basic:
-      return <Basic data={data} isDesktop={isDesktop} />;
+      return (
+        <Basic data={data} isDesktop={isDesktop} windowWidth={windowWidth} />
+      );
     case LegendType.gradient:
-      return <Gradient data={data} isDesktop={isDesktop} />;
+      return (
+        <Gradient data={data} isDesktop={isDesktop} windowWidth={windowWidth} />
+      );
     case LegendType.choropleth:
-      return <Choropleth data={data} isDesktop={isDesktop} />;
+      return (
+        <Choropleth
+          data={data}
+          isDesktop={isDesktop}
+          windowWidth={windowWidth}
+        />
+      );
     case LegendType.timeline:
-      return <Timeline data={data} isDesktop={isDesktop} />;
+      return (
+        <Timeline data={data} isDesktop={isDesktop} windowWidth={windowWidth} />
+      );
     default:
       return null;
   }

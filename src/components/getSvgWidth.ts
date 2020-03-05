@@ -1,6 +1,4 @@
-export default function getSvgWidth() {
-  const windowWidth = window.innerWidth;
-  const isDesktop = windowWidth > 768;
+export default function getSvgWidth(isDesktop, windowWidth) {
   const outerMargin = isDesktop ? 100 : 50;
   const maxWidth = 800;
   const svgWidth = Math.min(windowWidth - outerMargin, maxWidth);

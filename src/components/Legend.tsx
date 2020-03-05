@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { legendData } from "../types";
 import styled from "styled-components";
 import { useDrag } from "react-dnd";
@@ -14,6 +14,8 @@ interface Props {
 export default function Legend({ data }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [showVisualLegend, setShowVisualLegend] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const [{ isDragging }, drag] = useDrag({
     item: { type: "legend", id: data.id },
@@ -21,7 +23,22 @@ export default function Legend({ data }: Props) {
       isDragging: !!monitor.isDragging()
     })
   });
-  const isDesktop = window.innerWidth > 768;
+
+  function calculateIsDesktop() {
+    const windowWidth = window.innerWidth;
+    const isDesktop = windowWidth > 768;
+    setIsDesktop(isDesktop);
+    setWindowWidth(windowWidth);
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", calculateIsDesktop);
+
+    // return () => {
+    //   window.removeEventListener("resize", calculateIsDesktop);
+    // };
+  }, []);
+
   const largeVisual = data.type === "basic" || data.type === "gradient";
 
   return (
@@ -38,11 +55,16 @@ export default function Legend({ data }: Props) {
         setShowVisualLegend={setShowVisualLegend}
         showVisualLegend={showVisualLegend}
       />
-      <LegendVisual data={data} isDesktop={isDesktop} />
+      <LegendVisual
+        data={data}
+        isDesktop={isDesktop}
+        windowWidth={windowWidth}
+      />
       <LegendModal
         data={data}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        isDesktop={isDesktop}
       />
     </LegendWrapper>
   );
