@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DndProvider } from "react-dnd";
-import Backend from "react-dnd-html5-backend";
+import TouchBackend from "react-dnd-touch-backend";
 import axios from "axios";
 
 import Legend from "./Legend";
@@ -29,7 +29,7 @@ export function Legends() {
   }
 
   return (
-    <DndProvider backend={Backend}>
+    <DndProvider backend={TouchBackend}>
       {legendData.length
         ? legendData.map((d, i) => {
             return (
