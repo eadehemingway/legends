@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Tooltip, { Orientation } from "./Tooltip";
+
+import Tooltip, { Alignment } from "./Tooltip";
 
 interface Props {
   icon: string;
   tooltipText: string;
   onClick?: () => void;
   style?: any;
-  orientation: Orientation;
+  tooltipAlign: Alignment;
 }
 export default function IconWrapper({
   icon,
   tooltipText,
   onClick,
   style,
-  orientation
+  tooltipAlign
 }: Props) {
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -23,7 +24,7 @@ export default function IconWrapper({
       <Tooltip
         text={tooltipText}
         showTooltip={showTooltip}
-        orientation={orientation}
+        alignment={tooltipAlign}
       />
       <IconStyled
         src={icon}

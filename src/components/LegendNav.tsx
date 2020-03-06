@@ -8,7 +8,7 @@ import hide from "../assets/icons/hide.svg";
 import info from "../assets/icons/info.svg";
 import show from "../assets/icons/show.svg";
 import IconWrapper from "./IconWrapper";
-import { Orientation } from "./Tooltip";
+import { Alignment } from "./Tooltip";
 
 interface Props {
   data: legendData;
@@ -43,7 +43,7 @@ export default function Legend({
         <IconWrapper
           icon={dragDots}
           tooltipText="drag"
-          orientation={Orientation.right}
+          tooltipAlign={Alignment.left}
         />
         <PStyled>{name}</PStyled>
       </LeftNav>
@@ -52,20 +52,20 @@ export default function Legend({
           onClick={onChangeVisibility}
           icon={showMore ? hide : show}
           tooltipText={showMore ? "Hide layer" : "Show layer"}
-          orientation={Orientation.left}
+          tooltipAlign={Alignment.right}
         />
         <IconWrapper
           icon={info}
           onClick={onChangeInfo}
           tooltipText="Layer info"
-          orientation={Orientation.left}
+          tooltipAlign={Alignment.right}
         />
         <IconWrapper
           icon={arrowDown}
           style={{ transition: "transform 0.5s", transform: arrowTransform }}
           onClick={onChangeCollapse}
           tooltipText={showVisualLegend ? "Collapse layer" : "Expand layer"}
-          orientation={Orientation.left}
+          tooltipAlign={Alignment.right}
         />
       </RightNav>
     </NavWrapper>

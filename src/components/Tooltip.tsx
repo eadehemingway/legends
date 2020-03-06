@@ -1,23 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function Tooltip({ text, showTooltip, orientation }) {
+export default function Tooltip({ text, showTooltip, alignment }) {
   if (!showTooltip) return null;
   return (
-    <TooltipWrapper orientation={orientation}>
+    <TooltipWrapper alignment={alignment}>
       <PStyled>{text}</PStyled>
-      <Tag orientation={orientation} />
+      <Tag alignment={alignment} />
     </TooltipWrapper>
   );
 }
 
-export enum Orientation {
+export enum Alignment {
   right = "right",
   left = "left"
 }
 
 interface TooltipWrapper {
-  orientation: Orientation;
+  alignment: Alignment;
 }
 
 const TooltipWrapper = styled.div`
@@ -28,13 +28,10 @@ const TooltipWrapper = styled.div`
   padding: 0 20px;
   width: fit-content;
   border-radius: 2px;
-  ${({ orientation }: TooltipWrapper) =>
-    orientation === "left" ? "right: 10px" : "left: 10px"};
-
+  ${({ alignment }: TooltipWrapper) => `${alignment}: 10px`};
   @media only screen and (max-width: 768px) {
     top: -60px;
-    ${({ orientation }: TooltipWrapper) =>
-      orientation === "left" ? "right: -1px" : "left: -1px"};
+    ${({ alignment }: TooltipWrapper) => `${alignment}: -1px`};
   }
 `;
 
@@ -47,8 +44,7 @@ const Tag = styled.div`
   position: absolute;
   background: white;
   bottom: -7px;
-  ${({ orientation }: TooltipWrapper) =>
-    orientation === "left" ? "right: 7px" : "left: 7px"}
+  ${({ alignment }: TooltipWrapper) => `${alignment}: 7px`}
 `;
 
 const PStyled = styled.p`
