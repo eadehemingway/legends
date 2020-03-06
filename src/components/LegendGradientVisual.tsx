@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import styled from "styled-components";
 import getSvgWidth from "../utils/getSvgWidth";
 import getIsDesktop from "../utils/getIsDesktop";
+import getFontSize from "../utils/getFontSize";
 
 export default function Gradient({ data, windowWidth }) {
   const [showInput, setShowInput] = useState(false);
@@ -62,6 +63,7 @@ export default function Gradient({ data, windowWidth }) {
       .text(d => d.name);
 
     const textUpdateSelection = textSelection.merge(enterSelection);
+    const fontSize = getFontSize(isDesktop);
 
     textUpdateSelection
       .attr("x", (d, i) => {
@@ -70,7 +72,7 @@ export default function Gradient({ data, windowWidth }) {
         return gradientWidth - wordWidth;
       })
       .attr("y", margin + 30)
-      .attr("font-size", () => (isDesktop ? "14" : "12"));
+      .attr("font-size", fontSize);
   }, [data.items, windowWidth]);
 
   function handleSubmit() {

@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import moment from "moment";
 import getSvgWidth from "../utils/getSvgWidth";
 import getIsDesktop from "../utils/getIsDesktop";
+import getFontSize from "../utils/getFontSize";
 
 export default function Timeline({ data, windowWidth }) {
   const { minDate, maxDate, step, speed, dateFormat } = data.timeline;
@@ -12,7 +13,7 @@ export default function Timeline({ data, windowWidth }) {
   const [maxYear, setMaxYear] = useState(2009);
 
   function initialDrawing() {
-    const svg = d3.select("#Timeline-svg");
+    const svg = d3.select("#timeline-svg");
     const sliderGroup = svg.append("g").attr("class", "slider-group");
     sliderGroup.append("line").attr("class", "outer-track");
     sliderGroup.append("line").attr("class", "inner-track");
@@ -43,7 +44,7 @@ export default function Timeline({ data, windowWidth }) {
     const purple = "#CAB1D6";
 
     const svg = d3
-      .select("#Timeline-svg")
+      .select("#timeline-svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
@@ -119,11 +120,12 @@ export default function Timeline({ data, windowWidth }) {
       .attr("class", "max-text")
       .attr("transform", `translate(${sliderWidth - 30},30)`)
       .text(maxYear);
+    const fontSize = getFontSize(isDesktop);
 
     svg
       .selectAll("text")
       .attr("opacity", textOpacity)
-      .attr("font-size", () => (isDesktop ? "14" : "12"));
+      .attr("font-size", fontSize);
 
     function dragged(oldXCoordinate, minOrMax) {
       const oldDateVal = xScale.invert(oldXCoordinate);
@@ -186,7 +188,7 @@ export default function Timeline({ data, windowWidth }) {
 
   return (
     <>
-      <svg id="Timeline-svg"></svg>
+      <svg id="timeline-svg"></svg>
     </>
   );
 }

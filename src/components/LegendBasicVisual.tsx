@@ -3,6 +3,7 @@ import * as d3 from "d3";
 
 import getSvgWidth from "../utils/getSvgWidth";
 import getIsDesktop from "../utils/getIsDesktop";
+import getFontSize from "../utils/getFontSize";
 
 export default function Basic({ data, windowWidth }) {
   useEffect(() => {
@@ -16,27 +17,31 @@ export default function Basic({ data, windowWidth }) {
       .attr("height", svgHeight);
 
     const radius = 7;
+    const padding = 6;
+    const lineHeight = radius * 2 + padding;
     const groups = svg
       .selectAll("g")
       .data(data.items)
       .enter()
       .append("g")
-      .attr("transform", (d, i) => `translate(${margin},${20 * i + margin})`);
+      .attr(
+        "transform",
+        (d, i) => `translate(${margin},${lineHeight * i + margin})`
+      );
 
     groups
       .append("circle")
-      .attr("cx", 0)
-      .attr("cy", 0)
       .attr("r", radius)
       .attr("fill", d => d.color);
 
+    const fontSize = getFontSize(isDesktop);
     groups
       .append("text")
       .text(d => d.name)
-      .attr("x", 18)
-      .attr("y", 5)
+      .attr("x", radius * 2 + padding)
+      .attr("y", radius / 2)
       .attr("font-family", "OpenSans")
-      .attr("font-size", () => (isDesktop ? "14" : "12"));
+      .attr("font-size", fontSize);
   }, [data.items, windowWidth]);
 
   return (
