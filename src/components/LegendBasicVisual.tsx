@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import * as d3 from "d3";
 
 import getSvgWidth from "../utils/getSvgWidth";
+import getIsDesktop from "../utils/getIsDesktop";
 
-export default function Basic({ data, isDesktop, windowWidth }) {
+export default function Basic({ data, windowWidth }) {
   useEffect(() => {
+    const isDesktop = getIsDesktop(windowWidth);
     const svgWidth = getSvgWidth(isDesktop, windowWidth);
     const svgHeight = 400;
     const margin = isDesktop ? 50 : 20;
@@ -35,7 +37,7 @@ export default function Basic({ data, isDesktop, windowWidth }) {
       .attr("y", 5)
       .attr("font-family", "OpenSans")
       .attr("font-size", () => (isDesktop ? "14" : "12"));
-  }, [data.items, isDesktop, windowWidth]);
+  }, [data.items, windowWidth]);
 
   return (
     <>

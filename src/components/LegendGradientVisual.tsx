@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import styled from "styled-components";
 import getSvgWidth from "../utils/getSvgWidth";
+import getIsDesktop from "../utils/getIsDesktop";
 
-export default function Gradient({ data, isDesktop, windowWidth }) {
+export default function Gradient({ data, windowWidth }) {
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState("");
 
@@ -18,6 +19,7 @@ export default function Gradient({ data, isDesktop, windowWidth }) {
     initialDrawing();
   }, []);
   useEffect(() => {
+    const isDesktop = getIsDesktop(windowWidth);
     const svgWidth = getSvgWidth(isDesktop, windowWidth);
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
@@ -69,7 +71,7 @@ export default function Gradient({ data, isDesktop, windowWidth }) {
       })
       .attr("y", margin + 30)
       .attr("font-size", () => (isDesktop ? "14" : "12"));
-  }, [data.items, isDesktop, windowWidth]);
+  }, [data.items, windowWidth]);
 
   function handleSubmit() {
     setShowInput(false);

@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import * as d3 from "d3";
 
 import getSvgWidth from "../utils/getSvgWidth";
+import getIsDesktop from "../utils/getIsDesktop";
 
-export default function Choropleth({ data, isDesktop, windowWidth }) {
+export default function Choropleth({ data, windowWidth }) {
   useEffect(() => {
+    const isDesktop = getIsDesktop(windowWidth);
     const svgWidth = getSvgWidth(isDesktop, windowWidth);
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
@@ -45,7 +47,7 @@ export default function Choropleth({ data, isDesktop, windowWidth }) {
     const textSelection = svg.selectAll("text");
     const textUpdateSelection = textSelection.merge(textEnterSelection);
     textUpdateSelection.attr("font-size", () => (isDesktop ? "14" : "12"));
-  }, [data.items, isDesktop, windowWidth]);
+  }, [data.items, windowWidth]);
 
   return (
     <>

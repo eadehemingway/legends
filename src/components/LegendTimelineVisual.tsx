@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import moment from "moment";
 import getSvgWidth from "../utils/getSvgWidth";
+import getIsDesktop from "../utils/getIsDesktop";
 
-export default function Timeline({ data, isDesktop, windowWidth }) {
+export default function Timeline({ data, windowWidth }) {
   const { minDate, maxDate, step, speed, dateFormat } = data.timeline;
   const minYearInRange = moment(minDate).format(dateFormat);
   const maxYearInRange = moment(maxDate).format(dateFormat);
@@ -27,6 +28,7 @@ export default function Timeline({ data, isDesktop, windowWidth }) {
 
   useEffect(() => {
     const rangeValues = d3.range(minYearInRange, maxYearInRange + step, step);
+    const isDesktop = getIsDesktop(windowWidth);
     const svgWidth = getSvgWidth(isDesktop, windowWidth);
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
@@ -173,7 +175,6 @@ export default function Timeline({ data, isDesktop, windowWidth }) {
     }
   }, [
     data.items,
-    isDesktop,
     maxYear,
     maxYearInRange,
     minYear,

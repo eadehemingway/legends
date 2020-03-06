@@ -4,20 +4,22 @@ import { legendData } from "../types";
 import styled from "styled-components";
 
 import cross from "../assets/icons/cross.svg";
+import getIsDesktop from "../utils/getIsDesktop";
 
 interface Props {
   data: legendData;
   modalOpen: boolean;
   setModalOpen: (a: boolean) => void;
-  isDesktop: boolean;
+  windowWidth: number;
 }
 
 export default function LegendModal({
   data,
   modalOpen,
   setModalOpen,
-  isDesktop
+  windowWidth
 }: Props) {
+  const isDesktop = getIsDesktop(windowWidth);
   Modal.setAppElement("body");
   const { description } = data;
   const parser = new DOMParser();
