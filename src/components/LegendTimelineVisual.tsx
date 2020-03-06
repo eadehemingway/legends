@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import moment from "moment";
-import getSvgWidth from "./getSvgWidth";
+import getSvgWidth from "../utils/getSvgWidth";
 
 export default function Timeline({ data, isDesktop, windowWidth }) {
   const { minDate, maxDate, step, speed, dateFormat } = data.timeline;

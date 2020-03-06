@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import styled from "styled-components";
-import getSvgWidth from "./getSvgWidth";
+import getSvgWidth from "../utils/getSvgWidth";
 
 export default function Gradient({ data, isDesktop, windowWidth }) {
   const [showInput, setShowInput] = useState(false);

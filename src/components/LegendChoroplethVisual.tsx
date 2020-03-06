@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import * as d3 from "d3";
 
-import getSvgWidth from "./getSvgWidth";
+import getSvgWidth from "../utils/getSvgWidth";
 
 export default function Choropleth({ data, isDesktop, windowWidth }) {
   useEffect(() => {
