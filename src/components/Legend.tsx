@@ -40,15 +40,12 @@ export default function Legend({ data }: Props) {
   }, []);
 
   const largeVisual = data.type === "basic" || data.type === "gradient";
+  const openHeight = largeVisual ? "350px" : "200px";
+  const closedHeight = "60px";
+  const height = showVisualLegend ? openHeight : closedHeight;
 
   return (
-    <LegendWrapper
-      showVisualLegend={showVisualLegend}
-      ref={drag}
-      isDragging={isDragging}
-      largeVisual={largeVisual}
-      isDesktop={isDesktop}
-    >
+    <LegendWrapper ref={drag} isDragging={isDragging} style={{ height }}>
       <LegendNav
         data={data}
         setModalOpen={setModalOpen}
@@ -71,10 +68,7 @@ export default function Legend({ data }: Props) {
 }
 
 interface LegendWrapper {
-  showVisualLegend: boolean;
   isDragging: boolean;
-  largeVisual: boolean;
-  isDesktop: boolean;
 }
 
 const LegendWrapper = styled.div`
@@ -89,11 +83,6 @@ const LegendWrapper = styled.div`
   transition: height 1s;
   overflow: hidden;
   opacity: ${({ isDragging }: LegendWrapper) => (isDragging ? 0.2 : 1)};
-  height: ${({ showVisualLegend, largeVisual, isDesktop }: LegendWrapper) => {
-    const openHeight = largeVisual ? "350px" : "200px";
-    const closedHeight = isDesktop ? "60px" : "60px";
-    return showVisualLegend ? openHeight : closedHeight;
-  }};
   @media only screen and (max-width: 768px) {
     width: 90%;
     padding: 30px 20px 30px 20px;

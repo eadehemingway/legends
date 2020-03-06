@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from "react-modal";
 import { legendData } from "../types";
 import styled from "styled-components";
@@ -21,9 +21,9 @@ export default function LegendModal({
   Modal.setAppElement("body");
   const { description } = data;
   const parser = new DOMParser();
-  const parsedDesc = parser.parseFromString(description, "text/html");
+  const parsedDescription = parser.parseFromString(description, "text/html");
   const arrOfDescriptionNodes = [];
-  parsedDesc.body.childNodes.forEach(c => arrOfDescriptionNodes.push(c));
+  parsedDescription.body.childNodes.forEach(c => arrOfDescriptionNodes.push(c));
   const innerTextDescriptions = arrOfDescriptionNodes.map(d => d.innerText);
 
   function onOpenModal() {
@@ -32,15 +32,18 @@ export default function LegendModal({
   function onCloseModal() {
     document.body.style.overflow = "unset";
   }
+
+  const modalClass = isDesktop
+    ? "modal-content-desktop"
+    : "modal-content-mobile";
+
   return (
     <Modal
       isOpen={modalOpen}
       onAfterClose={onCloseModal}
       onAfterOpen={onOpenModal}
       onRequestClose={() => setModalOpen(false)}
-      className={`modal-content ${
-        isDesktop ? "modal-content-desktop" : "modal-content-mobile"
-      }`}
+      className={`modal-content ${modalClass}`}
       overlayClassName="react-modal-overlay"
     >
       <ModalContent>
@@ -62,40 +65,17 @@ const IconStyled = styled.img`
   cursor: pointer;
   margin: 15px;
 `;
+
 const H2Styled = styled.h2`
   width: 80%;
 `;
+
 const CrossIconStyled = styled(IconStyled)`
   position: absolute;
   top: 0;
   right: 20px;
   margin: 0;
   margin-top: 10px;
-`;
-
-interface LegendWrapper {
-  showVisualLegend: boolean;
-  isDragging: boolean;
-  largeVisual: boolean;
-}
-
-const LegendWrapper = styled.div`
-  background: white;
-  width: 800px;
-  margin: auto;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 70px 120px 30px 120px;
-  height: ${({ showVisualLegend, largeVisual }: LegendWrapper) => {
-    const openHeight = largeVisual ? "300px" : "150px";
-    return showVisualLegend ? openHeight : "20px";
-  }};
-  transition: height 1s;
-  overflow: hidden;
-  opacity: ${({ isDragging }: LegendWrapper) => (isDragging ? 0.2 : 1)};
-  @media only screen and (max-width: 768px) {
-    width: 90%;
-    padding: 70px 20px 30px 20px;
-  }
 `;
 
 const ModalTextContent = styled.div`
@@ -107,6 +87,7 @@ const ModalTextContent = styled.div`
   position: relative;
   overflow: scroll;
 `;
+
 const ModalContent = styled.div`
   position: relative;
 `;

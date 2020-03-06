@@ -1,4 +1,5 @@
 import React from "react";
+
 import Basic from "./LegendBasicVisual";
 import Gradient from "./LegendGradientVisual";
 import Choropleth from "./LegendChoroplethVisual";

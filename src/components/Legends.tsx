@@ -14,30 +14,26 @@ export function Legends() {
       .get(
         "https://raw.githubusercontent.com/Vizzuality/front-end-code-challenge/master/data.json"
       )
-      .then(({ data }) => {
-        setLegendData(data);
-      });
+      .then(({ data }) => setLegendData(data));
   }, []);
 
-  function moveLegend(id, newPosition) {
-    const data = legendData.find(a => a.id === id);
-    const oldIndex = legendData.findIndex(a => a.id === id);
+  function moveLegend(idToMove, newPosition) {
+    const dataToMove = legendData.find(a => a.id === idToMove);
+    const oldIndex = legendData.findIndex(a => a.id === idToMove);
     const newLegendData = [...legendData];
     newLegendData.splice(oldIndex, 1);
-    newLegendData.splice(newPosition, 0, data);
+    newLegendData.splice(newPosition, 0, dataToMove);
     setLegendData(newLegendData);
   }
 
   return (
     <DndProvider backend={TouchBackend}>
       {legendData.length
-        ? legendData.map((d, i) => {
-            return (
-              <LegendSpace key={i} position={i} moveLegend={moveLegend}>
-                <Legend data={d} />
-              </LegendSpace>
-            );
-          })
+        ? legendData.map((d, i) => (
+            <LegendSpace key={i} position={i} moveLegend={moveLegend}>
+              <Legend data={d} />
+            </LegendSpace>
+          ))
         : null}
     </DndProvider>
   );

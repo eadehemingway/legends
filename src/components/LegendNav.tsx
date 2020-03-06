@@ -37,6 +37,7 @@ export default function Legend({
   function onChangeCollapse() {
     setShowVisualLegend(!showVisualLegend);
   }
+
   return (
     <NavWrapper>
       <LeftNav>
@@ -85,6 +86,7 @@ const LeftNav = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
+
 const RightNav = styled.div`
   display: flex;
   justify-content: space-around;
@@ -95,7 +97,6 @@ const PStyled = styled.p`
   font-family: OpenSans;
   font-size: 18px;
   margin: 10px 10px 0 10px;
-
   @media only screen and (max-width: 768px) {
     font-size: 12px;
     margin-top: 0;
