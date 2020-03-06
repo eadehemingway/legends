@@ -25,7 +25,7 @@ export default function Gradient({ data, windowWidth }) {
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
     const gradientWidth = svgWidth - margin;
-
+    const leftMargin = margin / 2;
     const svg = d3
       .select("#gradient-svg")
       .attr("width", svgWidth)
@@ -47,32 +47,34 @@ export default function Gradient({ data, windowWidth }) {
       })
       .attr("stop-color", d => d.color);
 
+    const barHeight = 10;
     svg
       .selectAll(".legend-bar")
-      .attr("x", margin / 2)
+      .attr("x", leftMargin)
       .attr("y", margin)
-      .attr("height", 10)
+      .attr("height", barHeight)
       .attr("width", gradientWidth)
       .style("fill", "url(#linear-gradient)");
 
-    const textSelection = svg.selectAll("text").data(data.items);
+    const labels = data.items.filter(i => i.name).map(d => d.name);
+
+    const textSelection = svg.selectAll("text").data(labels);
 
     const enterSelection = textSelection
       .enter()
       .append("text")
-      .text(d => d.name);
+      .text(d => d);
 
     const textUpdateSelection = textSelection.merge(enterSelection);
     const fontSize = getFontSize(isDesktop);
+    const padding = 5;
+    const lineHeight = barHeight + fontSize + padding;
 
     textUpdateSelection
-      .attr("x", (d, i) => {
-        const wordWidth = 30;
-        if (i === 0) return wordWidth;
-        return gradientWidth - wordWidth;
-      })
-      .attr("y", margin + 30)
-      .attr("font-size", fontSize);
+      .attr("x", (d, i) => i * gradientWidth + leftMargin)
+      .attr("y", margin + lineHeight)
+      .attr("font-size", fontSize)
+      .style("text-anchor", (d, i) => (i === 0 ? "start" : "end"));
   }, [data.items, windowWidth]);
 
   function handleSubmit() {
@@ -86,7 +88,6 @@ export default function Gradient({ data, windowWidth }) {
         <TextContainer>
           <PStyled>{text}</PStyled>
           <ButtonStyled onClick={() => setShowInput(true)}>
-            {" "}
             {text ? "edit" : "add"} text
           </ButtonStyled>
         </TextContainer>

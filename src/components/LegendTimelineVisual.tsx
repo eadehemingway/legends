@@ -34,14 +34,15 @@ export default function Timeline({ data, windowWidth }) {
     const svgHeight = 100;
     const margin = isDesktop ? 50 : 20;
     const sliderWidth = svgWidth - margin;
+    const grey = "#CCCCCC";
+    const purple = "#CAB1D6";
+    const leftMargin = margin / 2;
+
     const xScale = d3
       .scaleLinear()
       .domain([minYearInRange, maxYearInRange])
       .range([0, sliderWidth])
       .clamp(true);
-
-    const grey = "#CCCCCC";
-    const purple = "#CAB1D6";
 
     const svg = d3
       .select("#timeline-svg")
@@ -50,10 +51,9 @@ export default function Timeline({ data, windowWidth }) {
 
     const sliderGroup = svg
       .selectAll(".slider-group")
-      .attr("transform", `translate(${margin / 2},${margin})`);
+      .attr("transform", `translate(${leftMargin},${margin})`);
 
     const lineStrokeWidth = 4;
-
     sliderGroup
       .selectAll(".outer-track")
       .attr("x1", xScale(minYearInRange))
@@ -100,7 +100,7 @@ export default function Timeline({ data, windowWidth }) {
       .selectAll(".max-handle")
       .attr("class", "max-handle")
       .attr("cx", xScale(maxYear))
-      .call(e => drag(e, "max"));
+      .call(s => drag(s, "max"));
 
     svg
       .selectAll("circle")
@@ -109,18 +109,22 @@ export default function Timeline({ data, windowWidth }) {
       .attr("r", handleRadius);
 
     const textOpacity = 0.7;
+    const fontSize = getFontSize(isDesktop);
+    const padding = 7;
+    const lineHeight = fontSize + padding + lineStrokeWidth;
     sliderGroup
       .selectAll(".min-text")
       .attr("class", "min-text")
-      .attr("transform", "translate(0, 30)")
+      .attr("transform", `translate(0, ${lineHeight})`)
+      .style("text-anchor", "start")
       .text(minYear);
 
     sliderGroup
       .selectAll(".max-text")
       .attr("class", "max-text")
-      .attr("transform", `translate(${sliderWidth - 30},30)`)
+      .attr("transform", `translate(${sliderWidth},${lineHeight})`)
+      .style("text-anchor", "end")
       .text(maxYear);
-    const fontSize = getFontSize(isDesktop);
 
     svg
       .selectAll("text")

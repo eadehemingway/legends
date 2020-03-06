@@ -18,7 +18,6 @@ export default function Choropleth({ data, windowWidth }) {
       .attr("height", svgHeight);
 
     const rectWidth = chloroplethWidth / data.items.length;
-
     const groupsSelection = svg.selectAll("g").data(data.items);
     const groupEnterSelection = groupsSelection.enter().append("g");
     const groupUpdateSelection = groupEnterSelection.merge(groupsSelection);
@@ -28,28 +27,29 @@ export default function Choropleth({ data, windowWidth }) {
       (d, i) => `translate(${rectWidth * i + margin / 2},${margin})`
     );
 
+    const rectHeight = 10;
     const rectEnterSelection = groupEnterSelection
       .append("rect")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("height", 10)
+      .attr("height", rectHeight)
       .style("fill", d => (d.color === "#FFFFFF" ? "#F0F0F0" : d.color));
 
     const rectSelection = svg.selectAll("rect");
     const rectUpdateSelection = rectSelection.merge(rectEnterSelection);
     rectUpdateSelection.attr("width", rectWidth);
 
+    const fontSize = getFontSize(isDesktop);
+    const padding = 7;
+    const textYOffset = rectHeight + fontSize + padding;
     const textEnterSelection = groupEnterSelection
       .append("text")
       .text(d => d.name)
-      .attr("x", margin / 2)
-      .attr("y", 30);
+      .attr("y", textYOffset)
+      .style("text-anchor", "middle");
 
     const textSelection = svg.selectAll("text");
     const textUpdateSelection = textSelection.merge(textEnterSelection);
-    const fontSize = getFontSize(isDesktop);
 
-    textUpdateSelection.attr("font-size", fontSize);
+    textUpdateSelection.attr("font-size", fontSize).attr("x", rectWidth / 2);
   }, [data.items, windowWidth]);
 
   return (
