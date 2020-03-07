@@ -9,8 +9,8 @@ export default function Timeline({ data, windowWidth }) {
   const { minDate, maxDate, step, speed, dateFormat } = data.timeline;
   const minYearInRange = moment(minDate).format(dateFormat);
   const maxYearInRange = moment(maxDate).format(dateFormat);
-  const [minYear, setMinYear] = useState(2004);
-  const [maxYear, setMaxYear] = useState(2009);
+  const [minYear, setMinYear] = useState(2001);
+  const [maxYear, setMaxYear] = useState(2017);
 
   function initialDrawing() {
     const svg = d3.select("#timeline-svg");
@@ -117,14 +117,14 @@ export default function Timeline({ data, windowWidth }) {
       .attr("class", "min-text")
       .attr("transform", `translate(0, ${lineHeight})`)
       .style("text-anchor", "start")
-      .text(minYear);
+      .text(minYearInRange);
 
     sliderGroup
       .selectAll(".max-text")
       .attr("class", "max-text")
       .attr("transform", `translate(${sliderWidth},${lineHeight})`)
       .style("text-anchor", "end")
-      .text(maxYear);
+      .text(maxYearInRange);
 
     svg
       .selectAll("text")
@@ -147,36 +147,28 @@ export default function Timeline({ data, windowWidth }) {
       const text = d3.selectAll(`.${minOrMax}-text`);
       const handle = d3.selectAll(`.${minOrMax}-handle`);
 
-      function updateHandleAndText() {
+      function updateVisual(x) {
         handle
           .transition()
           .duration(speed)
           .attrTween("cx", () =>
             d3.interpolate(oldXCoordinate, newXCoordinate)
           );
-        text.text(newDateVal);
+        // text.text(newDateVal);
+        innerTrack
+          .transition()
+          .duration(speed)
+          .attr(x, newXCoordinate);
       }
-      const minimumLessThanMaximum = minOrMax === "min" && maxYear > newDateVal;
 
-      if (minimumLessThanMaximum) {
+      if (minOrMax === "min" && newDateVal < maxYear) {
         setMinYear(newDateVal);
-        innerTrack
-          .transition()
-          .duration(speed)
-          .attr("x1", newXCoordinate);
-        updateHandleAndText();
+        updateVisual("x1");
       }
 
-      const maximumGreaterThanMinimum =
-        minOrMax === "max" && minYear < newDateVal;
-
-      if (maximumGreaterThanMinimum) {
+      if (minOrMax === "max" && newDateVal > minYear) {
         setMaxYear(newDateVal);
-        innerTrack
-          .transition()
-          .duration(speed)
-          .attr("x2", newXCoordinate);
-        updateHandleAndText();
+        updateVisual("x2");
       }
     }
   }, [

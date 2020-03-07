@@ -39,16 +39,16 @@ export default function Legend({
   }
 
   return (
-    <NavWrapper>
-      <LeftNav>
+    <ToolbarWrapper>
+      <LeftToolbar>
         <IconWrapper
           icon={dragDots}
           tooltipText="drag"
           tooltipAlign={Alignment.left}
         />
         <PStyled>{name}</PStyled>
-      </LeftNav>
-      <RightNav>
+      </LeftToolbar>
+      <RightToolbar>
         <IconWrapper
           onClick={onChangeVisibility}
           icon={showMore ? hide : show}
@@ -68,12 +68,12 @@ export default function Legend({
           tooltipText={showVisualLegend ? "Collapse layer" : "Expand layer"}
           tooltipAlign={Alignment.right}
         />
-      </RightNav>
-    </NavWrapper>
+      </RightToolbar>
+    </ToolbarWrapper>
   );
 }
 
-const NavWrapper = styled.div`
+const ToolbarWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -81,13 +81,13 @@ const NavWrapper = styled.div`
   min-height: 100px;
 `;
 
-const LeftNav = styled.div`
+const LeftToolbar = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
 `;
 
-const RightNav = styled.div`
+const RightToolbar = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;

@@ -3,7 +3,7 @@ import { legendData } from "../types";
 import styled from "styled-components";
 import { useDrag } from "react-dnd";
 
-import LegendNav from "./LegendNav";
+import LegendToolbar from "./LegendToolbar";
 import LegendVisual from "./LegendVisual";
 import LegendModal from "./LegendModal";
 
@@ -43,7 +43,7 @@ export default function Legend({ data }: Props) {
 
   return (
     <LegendWrapper ref={drag} isDragging={isDragging} style={{ height }}>
-      <LegendNav
+      <LegendToolbar
         data={data}
         setModalOpen={setModalOpen}
         setShowVisualLegend={setShowVisualLegend}
