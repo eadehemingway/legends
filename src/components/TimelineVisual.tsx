@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import moment from "moment";
+
 import getSvgWidth from "../utils/getSvgWidth";
 import getIsDesktop from "../utils/getIsDesktop";
 import getFontSize from "../utils/getFontSize";
@@ -33,7 +34,7 @@ export default function Timeline({ data, windowWidth }) {
     const rangeValues = d3.range(minYearInRange, maxYearInRange + step, step);
     const isDesktop = getIsDesktop(windowWidth);
     const svgWidth = getSvgWidth(isDesktop, windowWidth);
-    const svgHeight = 100;
+    const svgHeight = 200;
     const margin = isDesktop ? 50 : 20;
     const sliderWidth = svgWidth - margin;
     const grey = "#CCCCCC";
@@ -53,111 +54,87 @@ export default function Timeline({ data, windowWidth }) {
 
     const sliderGroup = svg
       .selectAll(".slider-group")
-      .attr("transform", `translate(${leftMargin},${margin})`);
+      .attr("transform", `translate(${leftMargin},${margin * 2})`);
 
     const lineStrokeWidth = 4;
-    sliderGroup
-      .selectAll(".outer-track")
-      .attr("x1", xScale(minYearInRange))
-      .attr("x2", xScale(maxYearInRange))
-      .attr("stroke", grey)
-      .attr("stroke-linecap", "round");
-
-    sliderGroup
-      .selectAll(".inner-track")
-      .attr("x1", xScale(minYear))
-      .attr("x2", xScale(maxYear))
-      .attr("stroke", purple);
-
-    svg.selectAll("line").attr("stroke-width", lineStrokeWidth);
-
-    function dragHandle(selection) {
-      const handleClass = selection.attr("class");
-      const minMax = handleClass.split("-")[0];
-      dragged(d3.event.x, minMax);
+    function drawLine(className, x1, x2, color) {
+      sliderGroup
+        .selectAll(className)
+        .attr("x1", xScale(x1))
+        .attr("x2", xScale(x2))
+        .attr("stroke", color)
+        .attr("stroke-linecap", "round")
+        .attr("stroke-width", lineStrokeWidth);
     }
 
-    const drag = d3
-      .drag()
-      .on("start", function() {
-        dragHandle(d3.select(this));
-      })
-      .on("drag", function() {
-        dragHandle(d3.select(this));
-      })
-      .on("end", function() {
-        dragHandle(d3.select(this));
-      });
+    drawLine(".outer-track", minYearInRange, maxYearInRange, grey);
+    drawLine(".inner-track", minYear, maxYear, purple);
 
-    const handleRadius = 8;
-    sliderGroup
-      .selectAll(".min-handle")
-      .attr("cx", xScale(minYear))
-      .call(s => drag(s, "min"));
+    const drag = d3.drag().on("drag", function() {
+      dragHandle(d3.select(this));
+    });
 
-    sliderGroup
-      .selectAll(".max-handle")
-      .attr("cx", xScale(maxYear))
-      .call(s => drag(s, "max"));
+    function drawHandle(minMax, xVal) {
+      const handleRadius = 8;
+      sliderGroup
+        .selectAll(`.${minMax}-handle`)
+        .attr("cx", xScale(xVal))
+        .attr("cursor", "pointer")
+        .attr("fill", purple)
+        .attr("r", handleRadius)
+        .call(s => drag(s, minMax));
+    }
 
-    svg
-      .selectAll("circle")
-      .attr("cursor", "pointer")
-      .attr("fill", purple)
-      .attr("r", handleRadius);
+    drawHandle("min", minYear);
+    drawHandle("max", maxYear);
 
-    const textOpacity = 0.7;
     const fontSize = getFontSize(isDesktop);
     const padding = 7;
     const lineHeight = fontSize + padding + lineStrokeWidth;
-    sliderGroup
-      .selectAll(".min-text")
-      .attr("transform", `translate(0, ${lineHeight})`)
-      .style("text-anchor", "start")
-      .text(minYearInRange);
+    function drawText(className, x, y, textAnchor, textString) {
+      const textOpacity = 0.7;
+      sliderGroup
+        .selectAll(className)
+        .attr("x", x)
+        .attr("y", y)
+        .style("text-anchor", textAnchor)
+        .text(textString)
+        .attr("opacity", textOpacity)
+        .attr("font-size", fontSize);
+    }
 
-    sliderGroup
-      .selectAll(".max-text")
-      .attr("transform", `translate(${sliderWidth},${lineHeight})`)
-      .attr("text-anchor", "end")
-      .text(maxYearInRange);
+    drawText(".min-text", 0, lineHeight, "start", minYearInRange);
+    drawText(".max-text", sliderWidth, lineHeight, "end", maxYearInRange);
+    drawText(
+      ".selected-min-text",
+      xScale(minYear),
+      -lineHeight,
+      "middle",
+      minYear
+    );
+    drawText(
+      ".selected-max-text",
+      xScale(maxYear),
+      -lineHeight,
+      "middle",
+      maxYear
+    );
 
-    sliderGroup
-      .selectAll(".selected-min-text")
-      .attr("x", xScale(minYear))
-      .attr("y", lineHeight)
-      .attr("text-anchor", "middle")
-      .text(minYear);
-
-    sliderGroup
-      .selectAll(".selected-max-text")
-      .attr("x", xScale(maxYear))
-      .attr("y", lineHeight)
-      .style("text-anchor", "middle")
-      .text(maxYear);
-
-    svg
-      .selectAll("text")
-      .attr("opacity", textOpacity)
-      .attr("font-size", fontSize);
-
-    function dragged(oldXCoordinate, minOrMax) {
+    function dragHandle(selection) {
+      console.log("dragin");
+      const handleClass = selection.attr("class");
+      const minOrMax = handleClass.split("-")[0];
+      const oldXCoordinate = d3.event.x;
       const oldDateVal = xScale.invert(oldXCoordinate);
-
       const indexOfNewVal = rangeValues.findIndex(val => {
         const bottomMidPoint = val - step / 2;
         const topMidPoint = val + step / 2;
         return bottomMidPoint < oldDateVal && oldDateVal < topMidPoint;
       });
-
-      const newXCoordinate = xScale(rangeValues[indexOfNewVal]);
       const newDateVal = rangeValues[indexOfNewVal];
 
-      const innerTrack = d3.selectAll(".inner-track");
-      const text = d3.selectAll(`.selected-${minOrMax}-text`);
-      const handle = d3.selectAll(`.${minOrMax}-handle`);
-
       function interpolateX(selection, xAttr) {
+        const newXCoordinate = xScale(rangeValues[indexOfNewVal]);
         selection
           .transition()
           .duration(speed)
@@ -167,10 +144,12 @@ export default function Timeline({ data, windowWidth }) {
       }
 
       function updateVisual(x) {
+        const innerTrack = d3.selectAll(".inner-track");
+        const handle = d3.selectAll(`.${minOrMax}-handle`);
+        const text = d3.selectAll(`.selected-${minOrMax}-text`);
         interpolateX(handle, "cx");
         interpolateX(text, "x");
         interpolateX(innerTrack, x);
-        text.text(newDateVal);
       }
 
       if (minOrMax === "min" && newDateVal < maxYear) {
@@ -185,8 +164,10 @@ export default function Timeline({ data, windowWidth }) {
     }
   }, [
     data.items,
+    maxDate,
     maxYear,
     maxYearInRange,
+    minDate,
     minYear,
     minYearInRange,
     speed,
@@ -194,9 +175,5 @@ export default function Timeline({ data, windowWidth }) {
     windowWidth
   ]);
 
-  return (
-    <>
-      <svg id="timeline-svg"></svg>
-    </>
-  );
+  return <svg id="timeline-svg" />;
 }

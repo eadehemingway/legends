@@ -17,11 +17,9 @@ export default function LegendSpace({ children, position, moveLegend }) {
   });
 
   return (
-    <>
-      <Wrapper ref={drop} isOver={isOver}>
-        {children}
-      </Wrapper>
-    </>
+    <Wrapper ref={drop} isOver={isOver}>
+      {children}
+    </Wrapper>
   );
 }
 

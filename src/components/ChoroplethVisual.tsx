@@ -52,9 +52,5 @@ export default function Choropleth({ data, windowWidth }) {
     textUpdateSelection.attr("font-size", fontSize).attr("x", rectWidth / 2);
   }, [data.items, windowWidth]);
 
-  return (
-    <>
-      <svg id="choropleth-svg"></svg>
-    </>
-  );
+  return <svg id="choropleth-svg" />;
 }

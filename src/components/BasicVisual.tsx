@@ -44,9 +44,5 @@ export default function Basic({ data, windowWidth }) {
       .attr("font-size", fontSize);
   }, [data.items, windowWidth]);
 
-  return (
-    <>
-      <svg id="basic-svg"></svg>
-    </>
-  );
+  return <svg id="basic-svg" />;
 }

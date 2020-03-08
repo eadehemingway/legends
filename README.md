@@ -21,6 +21,11 @@ This project uses create react app with typescript and D3 to build four differen
 
 I have recently been introduced to the merits of a flat file structure which leads to long file names (as each file name is prefaced with its parent component) but is extremely user friendly, so I chose to implement that here. I chose to style my components using styled components as I find them easy to use as a project scales. I have tried to make my components be as small as possible, as I think the smaller a component the easier it is to identify areas that can be refactored. I have used react hooks so that I can avoid having to switch between functional and class based components. I chose to use the native DOMParser to parse the html received from the api.
 
+i decided to add extra labels on the timeline because it felt like information that the user would need to have.
+
 ### challenges
 
 The most challenging part of this project was creating the timeline legend, and making it draggable.
+
+TIMELINE DRAG sticky ON MOBILE
+and labels cut off at edge on timeline

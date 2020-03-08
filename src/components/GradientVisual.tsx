@@ -83,7 +83,7 @@ export default function Gradient({ data, windowWidth }) {
   }
   return (
     <>
-      <svg id="gradient-svg"></svg>
+      <svg id="gradient-svg" />
       {!showInput && (
         <TextContainer>
           <PStyled>{text}</PStyled>
