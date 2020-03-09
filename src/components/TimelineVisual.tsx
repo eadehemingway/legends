@@ -126,7 +126,7 @@ export default function Timeline({ data, windowWidth }) {
     );
 
     function dragHandle(selection) {
-      console.log("selection:");
+      console.log("drag handle function");
       const handleClass = selection.attr("class");
       const minOrMax = handleClass.split("-")[0];
       const oldXCoordinate = d3.event.x;

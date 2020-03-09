@@ -15,13 +15,15 @@ interface Props {
   setModalOpen: (a: boolean) => void;
   setShowVisualLegend: (a: boolean) => void;
   showVisualLegend: boolean;
+  testref: any;
 }
 
 export default function Legend({
   data,
   setModalOpen,
   setShowVisualLegend,
-  showVisualLegend
+  showVisualLegend,
+  testref
 }: Props) {
   const [showMore, setShowMore] = useState(false);
 
@@ -39,7 +41,7 @@ export default function Legend({
   }
 
   return (
-    <ToolbarWrapper>
+    <ToolbarWrapper ref={testref}>
       <LeftToolbar>
         <IconWrapper
           icon={dragDots}

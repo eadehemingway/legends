@@ -29,8 +29,9 @@ export default function Legend({ data, windowWidth }: Props) {
   const height = showVisualLegend ? openHeight : closedHeight;
 
   return (
-    <LegendWrapper ref={drag} isDragging={isDragging} style={{ height }}>
+    <LegendWrapper isDragging={isDragging} style={{ height }}>
       <LegendToolbar
+        testref={drag}
         data={data}
         setModalOpen={setModalOpen}
         setShowVisualLegend={setShowVisualLegend}
