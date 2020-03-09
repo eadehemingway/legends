@@ -30,7 +30,6 @@ export default function Timeline({ data, windowWidth }) {
     sliderGroup.append("text").attr("class", "selected-max-text");
   }
 
-  function draw() {}
   useEffect(() => {
     const rangeValues = d3.range(minYearInRange, maxYearInRange + step, step);
     const isDesktop = getIsDesktop(windowWidth);
@@ -73,7 +72,6 @@ export default function Timeline({ data, windowWidth }) {
     drawLine(".inner-track", minYear, maxYear, purple);
 
     const drag = d3.drag().on("drag", function() {
-      console.log("in drag");
       dragHandle(d3.select(this));
     });
 
@@ -85,9 +83,7 @@ export default function Timeline({ data, windowWidth }) {
         .attr("cursor", "pointer")
         .attr("fill", purple)
         .attr("r", handleRadius)
-        .call(s => {
-          return drag(s);
-        });
+        .call(s => drag(s));
     }
 
     drawHandle("min", minYear);
@@ -126,10 +122,10 @@ export default function Timeline({ data, windowWidth }) {
     );
 
     function dragHandle(selection) {
-      console.log("drag handle function");
       const handleClass = selection.attr("class");
       const minOrMax = handleClass.split("-")[0];
       const oldXCoordinate = d3.event.x;
+
       const oldDateVal = xScale.invert(oldXCoordinate);
       const indexOfNewVal = rangeValues.findIndex(val => {
         const bottomMidPoint = val - step / 2;
