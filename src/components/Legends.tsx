@@ -24,6 +24,7 @@ export function Legends() {
         "https://raw.githubusercontent.com/Vizzuality/front-end-code-challenge/master/data.json"
       )
       .then(({ data }) => setLegendData(data));
+    // return window.removeEventListener("resize", calculateWindowWidth);
   }, []);
 
   function moveLegend(idToMove, newPosition) {

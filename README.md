@@ -25,7 +25,5 @@ i decided to add extra labels on the timeline because it felt like information t
 
 ### challenges
 
-The most challenging part of this project was creating the timeline legend, and making it draggable.
-Making react drag and drop work both on mobile and desktop (and work when screen resized without refreshing the page). solved by using touchBackend (originally could only get it to work for mobile, then added the options param to make it work for desktop too...)
-
-- TIMELINE DRAG sticky ON MOBILE
+The most challenging part of this project was creating the timeline legend, making it draggable and making the code as readable as possible.
+Making react drag and drop work both on mobile and desktop (and work when screen resized without refreshing the page). solved by using touchBackend (originally could only get it to work for mobile, then added the options param to make it work for desktop too)
