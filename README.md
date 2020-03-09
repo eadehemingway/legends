@@ -9,21 +9,18 @@ This project uses create react app with typescript and D3 to build four differen
 
 ### features
 
-- the gradient legend has the ability to add text note, which is stored in local storage and persists if you refresh the page
-- the legends can be reordered using drag and drop
+- the gradient legend has the ability to add a text note, which is stored in local storage and persists if you refresh the page
+- the legends can be reordered using drag and drop both on desktop and mobile (and still works if you resize the screen without having to refresh the page)
 - the window size can be resized and the content will resize accordingly without having to refresh the page
 - each icon has a tooltip that is positioned differently depending on the location of the icon
 - the collapse button makes the visual legend slide in / out of view with a smooth transition
 - the info icon opens a responsive modal
-- the timeline has a minimum and maximum handle that are draggable that use a smooth transition at the speed, step and label format specified by the data
+- the timeline has a minimum and maximum handle that are draggable that use a smooth transition and the speed, step and label format specified by the data.
+- I also added labels to the timeline handles so that the user could see what values the handles were on.
 
 ### decisions
 
-I have recently been introduced to the merits of a flat file structure which leads to long file names (as each file name is prefaced with its parent component) but is extremely user friendly, so I chose to implement that here. I chose to style my components using styled components as I find them easy to use as a project scales. I have tried to make my components be as small as possible, as I think the smaller a component the easier it is to identify areas that can be refactored. I have used react hooks so that I can avoid having to switch between functional and class based components. I chose to use the native DOMParser to parse the html received from the api.
-
-i decided to add extra labels on the timeline because it felt like information that the user would need to have.
-
-### challenges
-
-The most challenging part of this project was creating the timeline legend, making it draggable and making the code as readable as possible.
-Making react drag and drop work both on mobile and desktop (and work when screen resized without refreshing the page). solved by using touchBackend (originally could only get it to work for mobile, then added the options param to make it work for desktop too)
+I chose to style my components using styled components as I find them easy to use as a project scales.
+I have tried to make my components be as small as possible, as I think the smaller a component the easier it is to identify areas that can be refactored.
+I have used react hooks so that I can avoid having to switch between functional and class based components. I chose to use the native DOMParser to parse the html received from the api to avoid installing unnecessary packages.
+I thought a lot about how to organise the code in the timeline file, as I was aware a lot was happening in the second useEffect. I played around with separating the functions out using the useCallback hook but I found it harder to read this way so I left it all inside the one useEffect.
