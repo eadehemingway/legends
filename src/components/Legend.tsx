@@ -9,12 +9,12 @@ import LegendModal from "./LegendModal";
 
 interface Props {
   data: legendData;
+  windowWidth: number;
 }
 
-export default function Legend({ data }: Props) {
+export default function Legend({ data, windowWidth }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [showVisualLegend, setShowVisualLegend] = useState(true);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const [{ isDragging }, drag] = useDrag({
     item: { type: "legend", id: data.id },
@@ -22,19 +22,6 @@ export default function Legend({ data }: Props) {
       isDragging: !!monitor.isDragging()
     })
   });
-
-  function calculateWindowWidth() {
-    const windowWidth = window.innerWidth;
-    setWindowWidth(windowWidth);
-  }
-
-  useEffect(() => {
-    window.addEventListener("resize", calculateWindowWidth);
-
-    // return () => {
-    //   window.removeEventListener("resize", calculateIsDesktop);
-    // };
-  }, []);
 
   const largeVisual = data.type === "basic" || data.type === "gradient";
   const openHeight = largeVisual ? "350px" : "200px";

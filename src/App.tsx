@@ -18,7 +18,6 @@ const AppWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 1400px;
   @media only screen and (max-width: 768px) {
     margin-top: 0px;
   }

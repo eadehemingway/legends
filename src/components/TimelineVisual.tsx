@@ -13,6 +13,10 @@ export default function Timeline({ data, windowWidth }) {
   const [minYear, setMinYear] = useState(2005);
   const [maxYear, setMaxYear] = useState(2009);
 
+  useEffect(() => {
+    initialDrawing();
+  }, []);
+
   function initialDrawing() {
     const svg = d3.select("#timeline-svg");
     const sliderGroup = svg.append("g").attr("class", "slider-group");
@@ -26,16 +30,13 @@ export default function Timeline({ data, windowWidth }) {
     sliderGroup.append("text").attr("class", "selected-max-text");
   }
 
-  useEffect(() => {
-    initialDrawing();
-  }, []);
-
+  function draw() {}
   useEffect(() => {
     const rangeValues = d3.range(minYearInRange, maxYearInRange + step, step);
     const isDesktop = getIsDesktop(windowWidth);
     const svgWidth = getSvgWidth(isDesktop, windowWidth);
-    const svgHeight = 200;
-    const margin = isDesktop ? 50 : 20;
+    const svgHeight = 100;
+    const margin = isDesktop ? 50 : 30;
     const sliderWidth = svgWidth - margin;
     const grey = "#CCCCCC";
     const purple = "#CAB1D6";
@@ -52,9 +53,10 @@ export default function Timeline({ data, windowWidth }) {
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
+    const topPadding = 20;
     const sliderGroup = svg
       .selectAll(".slider-group")
-      .attr("transform", `translate(${leftMargin},${margin * 2})`);
+      .attr("transform", `translate(${leftMargin},${margin + topPadding})`);
 
     const lineStrokeWidth = 4;
     function drawLine(className, x1, x2, color) {
@@ -71,6 +73,7 @@ export default function Timeline({ data, windowWidth }) {
     drawLine(".inner-track", minYear, maxYear, purple);
 
     const drag = d3.drag().on("drag", function() {
+      console.log("in drag");
       dragHandle(d3.select(this));
     });
 
@@ -82,7 +85,9 @@ export default function Timeline({ data, windowWidth }) {
         .attr("cursor", "pointer")
         .attr("fill", purple)
         .attr("r", handleRadius)
-        .call(s => drag(s, minMax));
+        .call(s => {
+          return drag(s);
+        });
     }
 
     drawHandle("min", minYear);
@@ -121,7 +126,7 @@ export default function Timeline({ data, windowWidth }) {
     );
 
     function dragHandle(selection) {
-      console.log("dragin");
+      console.log("selection:");
       const handleClass = selection.attr("class");
       const minOrMax = handleClass.split("-")[0];
       const oldXCoordinate = d3.event.x;
